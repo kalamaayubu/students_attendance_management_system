@@ -9,7 +9,7 @@ export async function enrollCourse(studentId, regNo, courseId, courseCode) {
     // Step 1: Insert into students table (ignore if exists(usage of upsert))
     const { data: studentData, error: studentError } = await supabase
       .from("students")
-      .upsert([{ student_id: studentId, reg_no: regNo }], {onConflict: 'student_id, reg_no'}
+      .upsert([{ id: studentId, reg_no: regNo }], {onConflict: 'id, reg_no'}
     )
       .select('id')
       .maybeSingle()
@@ -38,7 +38,7 @@ export async function enrollCourse(studentId, regNo, courseId, courseCode) {
       console.error("Enrollment error:", enrollmentError.message);
 
       // Rollback: Delete student if enrollment fails
-      await supabase.from("students").delete().eq("student_id", studentId);
+      await supabase.from("students").delete().eq("id", studentId);
 
       return { success: false, error: "Enrollment failed. Rolled back student record." };
     }

@@ -7,7 +7,6 @@ import {
   CalendarClock,
   ChartLine,
   ChevronUp,
-  GraduationCap,
   LayoutDashboard,
   Library,
   LogOut,
@@ -70,7 +69,7 @@ const Sidebar = ({ isOpen }) => {
     {
       icon: CalendarClock,
       name: "Schedules",
-      url: "/student/dashboard",
+      url: "/student/schedules",
     },
     {
       icon: ChartLine,

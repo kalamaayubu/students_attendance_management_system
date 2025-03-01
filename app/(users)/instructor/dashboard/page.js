@@ -1,7 +1,7 @@
 'use client'
 
 import StatsCard from "@/components/StatsCard";
-import { BookCheck, BookCheckIcon, Newspaper, Plane, Presentation, TrendingDown, TrendingUp, Users } from "lucide-react";
+import { BookCheck, BookCheckIcon, Plane, Presentation, TrendingDown, TrendingUp } from "lucide-react";
 import { useSelector } from "react-redux";
 
 const InstructorDashboard = () => {

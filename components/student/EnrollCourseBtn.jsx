@@ -20,7 +20,7 @@ const EnrollCourseBtn = ({ courseCode, courseId }) => {
     try {
       const studentId = getUserId();
       const res = await enrollCourse(
-        studentId,
+        await studentId,
         regNumber,
         courseId,
         courseCode

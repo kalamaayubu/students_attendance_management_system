@@ -22,7 +22,7 @@ const AdminHeader = ({ toggleSideBar }) => {
           <span className="font-semibold text-xl hidden md:flex">AttendMe</span>
         </div>
 
-        <Menu onClick={toggleSideBar} className="cursor-pointer mx-2" />
+        <Menu onClick={toggleSideBar} className="cursor-pointer mx-2 size-6" />
       </div>
 
       <div

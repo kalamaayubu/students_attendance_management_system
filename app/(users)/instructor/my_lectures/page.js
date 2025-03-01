@@ -10,9 +10,9 @@ const MyLectures = async () => {
       return <p className="text-red-600">Failed to load courses: {message}</p>;
     }
 
-    if (courses.length === 0) {
-      return <p className="text-red-600">{message || "No courses found."}</p>;
-    }
+    // if (courses.length === 0) {
+    //   return <p className="text-red-600">{message || "No courses found."}</p>;
+    // }
 
     return (
       <div className="flex flex-col gap-10">
@@ -20,7 +20,8 @@ const MyLectures = async () => {
           <h1 className="text-2xl md:text-3xl xl:text-4xl">My Courses</h1>
           <AddACourse />
         </div>
-        <div className="bg-white p-4 w-fit rounded-lg">
+        {courses.length > 0 && (
+          <div className="bg-white p-4 w-fit rounded-lg">
           <ol className="list-decimal pl-6">
             {courses.map((course, index) => (
               <div key={course.id}>
@@ -35,6 +36,7 @@ const MyLectures = async () => {
             ))}
           </ol>
         </div>
+        )} 
       </div>
     );
   } catch (error) {

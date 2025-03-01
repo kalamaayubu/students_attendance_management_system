@@ -21,6 +21,39 @@ textarea {
 button {
   @apply px-3 py-2 outline-none;
 }
+
+/* QR code scanning styles */
+@keyframes scanAnimation {
+  0% {
+    top: 0%;
+    opacity: 0.3;
+  }
+  25% {
+    top: 25%;
+    opacity: 0.6;
+  }
+  50% {
+    top: 50%;
+    opacity: 1;
+  }
+  75% {
+    top: 75%;
+    opacity: 0.3;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.1;
+  }
+}
+
+.scan-overlay {
+  @apply absolute inset-0 bg-gradient-to-b from-transparent via-purple-500 to-transparent;
+  animation: scanAnimation 2s infinite linear;
+  height: 50%;
+  width: 100%;
+}
+/* End of QR code scanning styles */
+
 @layer base {
   :root {
     --background: 0 0% 100%;
