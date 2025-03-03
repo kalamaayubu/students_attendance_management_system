@@ -1,11 +1,10 @@
 'use server'
 import { createClient } from "@/lib/supabase/server"
 import QRCode from "qrcode"; // Import QRCode
-import { sendNotification } from "../notifications/sendNotification";
 import { revalidatePath } from "next/cache";
 
 
-export async function scheduleSession({ courseId, instructorId, startTime, endTime }) {
+export async function scheduleSession({ courseId, instructorId, startTime, endTime, latitude, longitude, }) {
     const supabase = await createClient()
     console.log("USERID::", instructorId);
     console.log("COURSEID::", courseId);
@@ -18,7 +17,9 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
                 course_id: courseId, 
                 instructor_id: instructorId,
                 start_time: startTime, 
-                end_time: endTime 
+                end_time: endTime,
+                longitude, 
+                latitude
             }
         ])
         .select('id') // Get the id of the newly created schedule

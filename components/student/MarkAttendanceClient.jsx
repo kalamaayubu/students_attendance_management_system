@@ -5,17 +5,62 @@ import { Loader } from "lucide-react";
 import { toast } from "react-toastify";
 import { markAttendance } from "@/actions/student/markAttendance";
 import { useRouter } from "next/navigation";
+import { getInstructorLocation } from "@/actions/student/getInstructorLocation";
+import {
+  checkStudentProximity,
+  getStudentLocation,
+} from "@/utils/geofencing/trackStudent";
 
 const MarkAttendanceClient = ({ qrData, studentId, startsAt, validUntill }) => {
   const { id: qrCodeId, schedule_id: scheduleId, qr_data: qrImage } = qrData;
-  const router = useRouter();
-
   const [isScanning, setIsScanning] = useState(false); // Scanning animation
+  const router = useRouter();
 
   const handleMarkAttendance = async () => {
     setIsScanning(true);
 
     try {
+      // Get the instructor's location from the storage
+      const {
+        data: { id, latitude: instructorLat, longitude: instructorLon },
+        error: instructorLocationError,
+      } = await getInstructorLocation(scheduleId);
+      if (instructorLocationError) {
+        console.error("Error:", instructorLocationError);
+        toast.error(instructorLocationError);
+        return;
+      }
+
+      // Get the student's current location
+      const {
+        latitude: studentLat,
+        longitude: studentLon,
+        error: studentLocationError,
+      } = await getStudentLocation();
+      if (studentLocationError) {
+        console.error("Error:", studentLocationError);
+        toast.error(studentLocationError);
+        return;
+      }
+
+      console.log(
+        `InstructorLocation: Lat -> ${instructorLat} Lon -> ${instructorLon}`
+      );
+      console.log(`StudnetLocation: Lat -> ${studentLat} Lon -> ${studentLon}`);
+
+      // Check if the distance between instructor and student exceeds the defined radius
+      const isWithinRange = await checkStudentProximity(
+        studentLat,
+        studentLon,
+        instructorLat,
+        instructorLon
+      );
+      if (!isWithinRange) {
+        toast.error("You are too far from the instructor.");
+        return;
+      }
+
+      // Mark attendance
       const response = await markAttendance(scheduleId, studentId, qrCodeId);
       if (!response.success) {
         toast.error(`${response.error}`);

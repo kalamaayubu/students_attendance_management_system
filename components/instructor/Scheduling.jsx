@@ -12,6 +12,7 @@ import { Loader } from "lucide-react";
 import { scheduleSession } from "@/actions/instructor/scheduleSession";
 import { getUserId } from "@/utils/getUserId";
 import { toast } from "react-toastify";
+import { getInstructorInitialLocation } from "@/utils/geofencing/getInstructorInitalLocation";
 
 const Scheduling = ({ courses }) => {
   const [selectedCourseId, setSelectedCourseId] = useState("");
@@ -25,6 +26,14 @@ const Scheduling = ({ courses }) => {
     setIsProcessing(true);
 
     try {
+      // Get the instructor's current location
+      const { latitude, longitude, error } =
+        await getInstructorInitialLocation();
+      if (error) {
+        setIsProcessing(false);
+        toast.error("Failed to get location. Please try again.");
+      }
+
       // Get the instructorId
       const instructorId = await getUserId();
       console.log("USERID::", instructorId);
@@ -36,6 +45,8 @@ const Scheduling = ({ courses }) => {
           instructorId,
           startTime,
           endTime,
+          latitude,
+          longitude,
         });
         toast.success(response.message);
         setIsProcessing(false);
