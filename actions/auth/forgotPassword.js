@@ -13,7 +13,7 @@ export async function forgotPassword(email) {
 
     // Get the base URL dynamically for appropriate redirection
     const baseUrl = process.env.NODE_ENV === 'production'
-        ? 'https://jsdreamers.netlify.app'
+        ? 'https://attendmanager.netlify.app'
         : 'http://localhost:3000';
 
     // Send the password reset email
