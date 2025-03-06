@@ -17,9 +17,9 @@ const SchedulesPage = async () => {
         const studentId = await getUserId()
 
         // Get schedules of the student's enrolled courses
-        const schedules = await getClasses(studentId)
+        const schedules = await getClasses()
         if (schedules.length === 0) {
-            return <p>Could not fetch upcomming schedules</p>
+            return <p>No schedule was found</p>
         }
 
         // Fetch attendance records for the student
