@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
-export async function markAttendance(scheduleId, studentId, qrCodeId) {
+export async function markAttendance(scheduleId, courseId, studentId, qrCodeId) {
     const supabase = await createClient()
     // console.log('SCHEDULEID:', scheduleId)
 
@@ -14,7 +14,8 @@ export async function markAttendance(scheduleId, studentId, qrCodeId) {
             {
                 schedule_id: scheduleId,
                 student_id: studentId,
-                qr_id: qrCodeId
+                qr_id: qrCodeId,
+                course_id: courseId
             }
         ])
         .select('*')

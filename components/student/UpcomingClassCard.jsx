@@ -75,6 +75,7 @@ const UpcomingClassCard = ({
               pathname: `/student/schedules/${scheduleData.schedule_id}`,
               query: {
                 studentId: studentId,
+                courseId: scheduleData.course_id,
                 courseName: scheduleData.course_name,
                 scheduleId: scheduleData.schedule_id,
                 startsAt: start,

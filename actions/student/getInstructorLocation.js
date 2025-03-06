@@ -1,5 +1,4 @@
 'use server'
-
 import { createClient } from "@/lib/supabase/server"
 
 export async function getInstructorLocation(scheduleId) {
@@ -16,6 +15,5 @@ export async function getInstructorLocation(scheduleId) {
         return { success: false, error: error.message}
     }
 
-    console.log('Instructor stored location', data)
     return { success: true, data }
 }

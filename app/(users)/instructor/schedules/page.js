@@ -1,12 +1,8 @@
 import { getCourses } from "@/actions/instructor/getMyLectures"
 import Scheduling from "@/components/instructor/Scheduling"
-import { getUserId } from "@/utils/getUserId"
 
 const SchedulesPage = async () => {
     try {
-        // Get the instuctor's ID
-        const instructorId = await getUserId()
-
         // Fetch instructor's courses
         const {success, courses, message, error } = await getCourses()
 

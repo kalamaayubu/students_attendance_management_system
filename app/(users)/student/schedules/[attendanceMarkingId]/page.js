@@ -3,7 +3,7 @@ import MarkAttendanceClient from "@/components/student/MarkAttendanceClient";
 
 const AttendanceMarkingPage = async ({ params, searchParams }) => {
   const { attendanceMarkingId } = await params;
-  const { courseName, studentId, startsAt, validUntill } = await searchParams;
+  const { courseId, courseName, studentId, startsAt, validUntill } = await searchParams;
 
   try {
     // Fetch QR code data on the server
@@ -16,6 +16,7 @@ const AttendanceMarkingPage = async ({ params, searchParams }) => {
         {/* Pass data to the Client Component */}
         <MarkAttendanceClient
           qrData={qrCodeData?.qr_data}
+          courseId={courseId}
           studentId={studentId}
           startsAt={startsAt}
           validUntill={validUntill}

@@ -11,7 +11,13 @@ import {
   getStudentLocation,
 } from "@/utils/geofencing/trackStudent";
 
-const MarkAttendanceClient = ({ qrData, studentId, startsAt, validUntill }) => {
+const MarkAttendanceClient = ({
+  qrData,
+  courseId,
+  studentId,
+  startsAt,
+  validUntill,
+}) => {
   const { id: qrCodeId, schedule_id: scheduleId, qr_data: qrImage } = qrData;
   const [isScanning, setIsScanning] = useState(false); // Scanning animation
   const router = useRouter();
@@ -43,11 +49,6 @@ const MarkAttendanceClient = ({ qrData, studentId, startsAt, validUntill }) => {
         return;
       }
 
-      console.log(
-        `InstructorLocation: Lat -> ${instructorLat} Lon -> ${instructorLon}`
-      );
-      console.log(`StudnetLocation: Lat -> ${studentLat} Lon -> ${studentLon}`);
-
       // Check if the distance between instructor and student exceeds the defined radius
       const isWithinRange = await checkStudentProximity(
         studentLat,
@@ -61,7 +62,12 @@ const MarkAttendanceClient = ({ qrData, studentId, startsAt, validUntill }) => {
       }
 
       // Mark attendance
-      const response = await markAttendance(scheduleId, studentId, qrCodeId);
+      const response = await markAttendance(
+        scheduleId,
+        courseId,
+        studentId,
+        qrCodeId
+      );
       if (!response.success) {
         toast.error(`${response.error}`);
         return;

@@ -12,18 +12,22 @@ import {
   LogOut,
   Settings,
   User,
-  User2Icon,
   UserPen,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import TooltipWrapper from "../TooltipWrapper";
+import ReusableDialog from "../ReusableDialog";
+import SelectReportCourse from "./SelectReportCourse";
 
 const Sidebar = ({ isOpen }) => {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState(null); // Track selected course
   const logoutRef = useRef(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   // Close the logout div when user clicks outside it
   useEffect(() => {
@@ -74,7 +78,7 @@ const Sidebar = ({ isOpen }) => {
     {
       icon: ChartLine,
       name: "Reports",
-      url: "/instructor/dashboard",
+      url: "/instructor/reports",
     },
     {
       icon: CalendarClock,
@@ -82,6 +86,12 @@ const Sidebar = ({ isOpen }) => {
       url: "/instructor/schedules",
     },
   ];
+
+  // Handle "Reports" link click
+  const handleReportsClick = (e) => {
+    e.preventDefault();
+    setIsDialogOpen(true);
+  };
 
   return (
     <div
@@ -97,7 +107,16 @@ const Sidebar = ({ isOpen }) => {
             isSidebarOpen={isOpen}
           >
             <div
-              onClick={() => router.push(item.url)}
+              onClick={(e) => {
+                if (
+                  item.name === "Reports" &&
+                  pathname !== "/instructor/reports"
+                ) {
+                  handleReportsClick(e);
+                } else {
+                  router.push(item.url);
+                }
+              }}
               className={`${
                 isOpen
                   ? "px-3 py-1 hover:rounded-lg hover:bg-lightGray"
@@ -114,6 +133,32 @@ const Sidebar = ({ isOpen }) => {
           </TooltipWrapper>
         ))}
       </div>
+
+      {/* Dialog for Reports */}
+      <ReusableDialog
+        title="Get Attendance Report?"
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      >
+        <SelectReportCourse onSelect={setSelectedCourseId} />
+        <div className="flex justify-end gap-2 mt-4">
+          <button
+            onClick={() => setIsDialogOpen(false)}
+            className="px-5 py-2 bg-gray-300 rounded-xl"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              router.push(`/instructor/reports/${selectedCourseId}`);
+              setIsDialogOpen(false);
+            }}
+            className="px-5 py-2 bg-blue-500 text-white rounded-xl"
+          >
+            Proceed
+          </button>
+        </div>
+      </ReusableDialog>
 
       <div
         className={`absolute bottom-0 w-full overflow-y-clip ${

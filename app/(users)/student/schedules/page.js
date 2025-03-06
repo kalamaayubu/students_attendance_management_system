@@ -15,7 +15,6 @@ const SchedulesPage = async () => {
     try {
         // Get id of the loged in student
         const studentId = await getUserId()
-        // console.log('STUDENTID:', studentId)
 
         // Get schedules of the student's enrolled courses
         const schedules = await getClasses(studentId)
@@ -32,6 +31,7 @@ const SchedulesPage = async () => {
         const ongoing = [];
         const past = [];
 
+        // Determine a group in which each schedule belongs to
         schedules.forEach(schedule => {
             const start = dayjs.utc(schedule.start_time).local()
             const end = dayjs.utc(schedule.end_time).local()
@@ -39,15 +39,10 @@ const SchedulesPage = async () => {
             if (start.isAfter(now)) {
                 upcoming.push({...schedule, status: 'upcoming'})
             } else if (now.isBetween(start, end, null, '[)')) {  // [) includes start, excludes end
-                // console.log("ONGOING CLASS DETECTED:", schedule);
                 ongoing.push({...schedule, status: 'ongoing'});
             } else if(end.isBefore(now)) {
                 past.push({...schedule, status: 'past'})
             } 
-
-            // console.log(`FROM DATABASE -> NOW: ${now}\n STARTS: ${start}\n ENDS: ${end}`)
-            // console.log('ISBETWEEN:', now.isBetween(start, end, null, "[]"))
-            // // console.log("isBetween (default):", now.isBetween(start, end));
         });
 
         return (
