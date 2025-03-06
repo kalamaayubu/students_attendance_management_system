@@ -17,7 +17,7 @@ const ReportTable = ({ report }) => {
       report.flatMap(
         (student) =>
           student.attendance?.map((record) =>
-            format(new Date(record.schedules.start_time), "yyyy-MM-dd")
+            format(new Date(record.schedules.start_time), "yyyy-MM-dd HH:mm")
           ) || []
       )
     ),
@@ -25,7 +25,7 @@ const ReportTable = ({ report }) => {
 
   return (
     <div className="overflow-x-auto">
-      <Table className="border border-collapse border-black w-full">
+      <Table className="border border-collapse border-black w-full overflow-x-auto">
         <TableCaption className="font-semibold">
           {`${report[0]?.courses?.course_code} Attendance List`}
         </TableCaption>
@@ -97,7 +97,10 @@ const ReportTable = ({ report }) => {
             // Extract this student's attendance dates
             const studentAttendance = new Set(
               student.attendance?.map((record) =>
-                format(new Date(record.schedules.start_time), "yyyy-MM-dd")
+                format(
+                  new Date(record.schedules.start_time),
+                  "yyyy-MM-dd HH:mm"
+                )
               ) || []
             );
 
