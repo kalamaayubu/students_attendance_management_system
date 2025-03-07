@@ -30,7 +30,7 @@ const AdminHeader = ({ toggleSideBar }) => {
           isFocused
             ? "bg-white shadow-md border-[1px] border-gray-100"
             : "bg-gray-100"
-        } flex gap-2 items-center px-4 py-[2px] rounded-full`}
+        } gap-2 items-center hidden md:flex px-4 py-[2px] rounded-full`}
       >
         <Search className="text-gray-500 w-5" />
         <input

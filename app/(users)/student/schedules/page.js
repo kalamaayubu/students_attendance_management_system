@@ -51,7 +51,7 @@ const SchedulesPage = async () => {
                 {ongoing.length > 0 && (
                     <div className="flex flex-col mt-6">
                         <h3 className="text-[20px] bg-gradient-to-br from-blue-800 to-purple-500 bg-clip-text text-transparent">Ongoing</h3>
-                        <div className="flex flex-wrap py-2 gap-6">
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-2 gap-6">
                             {ongoing.map((schedule) => (
                                 <UpcomingClassCard 
                                     key={schedule.schedule_id} 
@@ -69,7 +69,7 @@ const SchedulesPage = async () => {
                 {upcoming.length > 0 && (
                     <div className="flex flex-col pt-8">
                         <h3 className="text-[20px] bg-gradient-to-br from-blue-800 to-purple-500 bg-clip-text text-transparent">Upcoming</h3>
-                        <div className="flex flex-wrap py-2 gap-6">
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-2 gap-6">
                             {upcoming.map((schedule) => (
                                 <UpcomingClassCard 
                                     key={schedule.schedule_id} 
@@ -87,7 +87,7 @@ const SchedulesPage = async () => {
                 {past.length > 0 && (
                     <div className="flex flex-col mt-6 pt-8 opacity-60">
                         <h3 className="text-[20px] bg-gradient-to-br from-blue-800 to-purple-500 bg-clip-text text-transparent">Past Classes</h3>
-                        <div className="flex flex-wrap py-2 gap-6">
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-2 gap-6">
                             {past.map((schedule) => (
                                 <UpcomingClassCard 
                                     key={schedule.schedule_id} 

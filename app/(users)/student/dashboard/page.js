@@ -1,33 +1,47 @@
-'use client'
-
+import { getAllCoursesCount } from "@/actions/getAllCoursesCount";
+import { getEnrolledCourses } from "@/actions/student/getStats";
+import { CountSkeleton } from "@/components/CountSkeleton";
 import StatsCard from "@/components/StatsCard";
-import { BookCheck, Newspaper, Plane, TrendingDown, TrendingUp, Users } from "lucide-react";
-import { useSelector } from "react-redux";
+import { getUserId } from "@/utils/getUserId";
+import { BookCheck, Library, Newspaper, Plane, TrendingDown, TrendingUp, Users } from "lucide-react";
 
-const StudentDasboard = () => {
-  // Get the userID from the Redux store
-  const userId = useSelector(state => state.auth.user?.id)
+const StudentDasboard = async () => {
+  // Get the student's statistics
+  const studentId = await getUserId()
+  try {
+    // Get the number of courses the student is enrolled in
+    const enrolledCoursesCount = await getEnrolledCourses(studentId);
+    if (enrolledCoursesCount === 0) {return}
+
+    // 
+    const allCoursesCount = await getAllCoursesCount();
+    if (allCoursesCount === 0) {return}
 
   const stats = [
-    { icon: Users, title: "Total users", count: 22, color: "#1D4ED8", shadowColor: "#60A5FA", percentage: "4.5", trendIcon: TrendingUp },
-    { icon: BookCheck, title: "All blogs", count: 84, color: "#EA580C", shadowColor: "#FDBA74", percentage: "0.5", trendIcon: null },
-    { icon: Newspaper, title: "My Blogs", count: 34, color: "#15803D", shadowColor: "#4ADE80", percentage: "2.1", trendIcon: TrendingDown },
-    { icon: Plane, title: "Total users", count: 59, color: "#7C3AED", shadowColor: "#C084FC", percentage: "6.8", trendIcon: TrendingUp },
+    { icon: Library, title: "Enrolled courses", count: `${enrolledCoursesCount}`, color: "#1D4ED8", shadowColor: "#60A5FA", percentage: "4.5", trendIcon: TrendingUp },
+    { icon: BookCheck, title: "Courses offered", count: `${allCoursesCount}`, color: "#EA580C", shadowColor: "#FDBA74", percentage: "0.5", trendIcon: null },
   ]
 
-  return (
-    <div className="flex flex-col gap-5 overflow-y-auto">
-      <div className="flex gap-4 flex-wrap items-center" >
-        {stats.map((stat, index) => (
-          <StatsCard key={index} {...stat}/>
-        ))}
-      </div>
+    return (
+      <div className="flex flex-col gap-5 overflow-y-auto">
+        <div className="flex gap-4 flex-wrap items-center" >
+          {stats.map((stat, index) => (
+            <StatsCard key={index} {...stat}/>
+          ))}
+          <div className="shadow-md rounded-lg p-4 bg-white size-52">
+            The pie chart will go here
+          </div>
+        </div>
 
-      <div className="bg-white h-[1000px] rounded-lg p-4">
-        <p className="font-bold text-2xl">Graph</p>
+        <div className="bg-white h-[1000px] rounded-lg p-4">
+          <p className="font-bold text-2xl">Graph</p>
+          <CountSkeleton/>
+        </div>
       </div>
-    </div>
-  )
+    )
+} catch (error) {
+  console.error(error)
+}
 }
 
 export default StudentDasboard

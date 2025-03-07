@@ -20,6 +20,8 @@ import { toast } from "react-toastify";
 import TooltipWrapper from "../TooltipWrapper";
 import ReusableDialog from "../ReusableDialog";
 import SelectReportCourse from "./SelectReportCourse";
+import { getUserId } from "@/utils/getUserId";
+import { getUserBio } from "@/utils/getUserBio";
 
 const Sidebar = ({ isOpen }) => {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
@@ -28,6 +30,22 @@ const Sidebar = ({ isOpen }) => {
   const logoutRef = useRef(null);
   const router = useRouter();
   const pathname = usePathname();
+  const [userBio, setUserBio] = useState({
+    first_name: "Username",
+    second_name: "",
+    email: "Email",
+  });
+
+  // Get user bio on component mount for personalization
+  useEffect(() => {
+    const fetchUserBio = async () => {
+      const userId = await getUserId();
+      const { data } = await getUserBio(userId);
+      setUserBio(data);
+    };
+
+    fetchUserBio();
+  }, []);
 
   // Close the logout div when user clicks outside it
   useEffect(() => {
@@ -165,7 +183,10 @@ const Sidebar = ({ isOpen }) => {
           isLogoutOpen ? "pt-12" : "h-12"
         } ${isOpen ? "" : ""}`}
       >
-        <TooltipWrapper label="User" isSidebarOpen={isOpen}>
+        <TooltipWrapper
+          label={`${userBio.first_name} ${userBio.second_name}`}
+          isSidebarOpen={isOpen}
+        >
           <div
             onClick={() => setIsLogoutOpen(!isLogoutOpen)}
             className={`${
@@ -173,7 +194,9 @@ const Sidebar = ({ isOpen }) => {
             } flex w-full cursor-pointer bg-white z-20 rounded-md gap-2 items-center absolute bottom-0 hover:bg-gray-50`}
           >
             <User className={`${isOpen ? "" : "size-5"}`} />
-            <button className={`${isOpen ? "" : "hidden"}`}>Username</button>
+            <button className={`${isOpen ? "" : "hidden"}`}>
+              {userBio.first_name}
+            </button>
             <ChevronUp
               className={`${isOpen ? "" : "hidden"} ${
                 isLogoutOpen ? "rotate-0" : "rotate-180"
@@ -217,7 +240,7 @@ const Sidebar = ({ isOpen }) => {
               onClick={handleLogout}
               className={` ${
                 isOpen ? "px-3 py-2" : ""
-              } whitespace-nowrap hover:bg-red-500 rounded-md flex items-center gap-2`}
+              } whitespace-nowrap hover:bg-gradient-to-br hover:from-blue-800 hover:to-purple-600 hover:text-white rounded-md flex items-center gap-2`}
             >
               <LogOut className={`size-4`} />
               <span className={`${isOpen ? "" : "hidden"}`}>Logout</span>
