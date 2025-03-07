@@ -22,32 +22,13 @@ const ReportTable = ({ report }) => {
       )
     ),
   ];
+  // alert(allDates.length);
 
   return (
-    <div className="overflow-x-auto">
-      <Table className="border border-collapse border-black w-full overflow-x-auto">
-        <TableCaption className="font-semibold">
-          {`${report[0]?.courses?.course_code} Attendance List`}
-        </TableCaption>
-
+    <div className="">
+      <Table className="border border-collapse border-black w-full m-auto">
         {/* WEEK Row */}
         <TableHeader>
-          <TableRow className="border-black border">
-            <TableHead className="w-10"></TableHead>
-            <TableHead className="w-60"></TableHead>
-            <TableHead className="w-10 text-center border border-black">
-              WEEK
-            </TableHead>
-
-            {/* Empty placeholders for dynamic attendance dates */}
-            {allDates.map((_, index) => (
-              <TableHead
-                key={index}
-                className="w-32 border border-black"
-              ></TableHead>
-            ))}
-          </TableRow>
-
           {/* DATE Row */}
           <TableRow className="border-black border">
             <TableHead className="w-10"></TableHead>
@@ -60,7 +41,7 @@ const ReportTable = ({ report }) => {
             {allDates.map((date, index) => (
               <TableHead
                 key={index}
-                className="text-center border border-black"
+                className="text-center border border-black pb-2"
               >
                 {date}
               </TableHead>
@@ -69,7 +50,7 @@ const ReportTable = ({ report }) => {
 
           {/* Main Headers */}
           <TableRow className="border-black border">
-            <TableHead className="w-10 text-center border border-black">
+            <TableHead className="w-6 text-center border border-black">
               S/NO
             </TableHead>
             <TableHead className="w-60 text-left border border-black">
@@ -88,6 +69,7 @@ const ReportTable = ({ report }) => {
                 Present
               </TableHead>
             ))}
+            <TableHead>%age</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -103,6 +85,8 @@ const ReportTable = ({ report }) => {
                 )
               ) || []
             );
+            const attendedClasses = studentAttendance.size;
+            const totalClasses = allDates.length;
 
             return (
               <TableRow
@@ -110,7 +94,7 @@ const ReportTable = ({ report }) => {
                 className="border border-black"
               >
                 {/* Serial Number */}
-                <TableCell className="text-center max-w-10 border-black border-r">
+                <TableCell className="text-center max-w-6 border-black border-r">
                   {index + 1}
                 </TableCell>
 
@@ -131,13 +115,18 @@ const ReportTable = ({ report }) => {
                     key={i}
                     className={`text-center border border-black ${
                       studentAttendance.has(date)
-                        ? "text-green-600"
-                        : "text-red-500"
+                        ? "text-green-700"
+                        : "text-red-600"
                     }`}
                   >
                     {studentAttendance.has(date) ? "✔" : "✘"}
                   </TableCell>
                 ))}
+                <TableCell className="text-center">
+                  {totalClasses > 0
+                    ? `${((attendedClasses / totalClasses) * 100).toFixed()}`
+                    : "0"}{" "}
+                </TableCell>
               </TableRow>
             );
           })}
