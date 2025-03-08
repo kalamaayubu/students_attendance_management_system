@@ -1,9 +1,11 @@
 import { getAllCoursesCount } from "@/actions/getAllCoursesCount";
+import { getAttendanceData } from "@/actions/instructor/getAttendanceChartData";
 import { getCoursesCount } from "@/actions/instructor/getCoursesCount";
 import { CountSkeleton } from "@/components/CountSkeleton";
+import AttendanceLineChart from "@/components/instructor/AttendanceLineChart";
 import StatsCard from "@/components/StatsCard";
 import { getUserId } from "@/utils/getUserId";
-import { BookCheck, BookCheckIcon, Plane, Presentation, TrendingDown, TrendingUp } from "lucide-react";
+import { BookCheckIcon, Presentation, TrendingUp } from "lucide-react";
 
 const InstructorDashboard = async () => {
   const instructorId = await getUserId()
@@ -11,6 +13,8 @@ const InstructorDashboard = async () => {
   try {
     const coursesCount = await getCoursesCount(instructorId); // Instructor's courses
     const allCoursesCount = await getAllCoursesCount() // All courses offered
+    const data = await getAttendanceData(instructorId); // Attendance data for visualization
+    console.log('Fetched chart data', data)
 
   const stats = [
     { icon: Presentation, title: "My Lectures", count: `${coursesCount}`, color: "#1D4ED8", shadowColor: "#60A5FA", percentage: "4.5", trendIcon: TrendingUp },
@@ -25,14 +29,13 @@ const InstructorDashboard = async () => {
           ))}
         </div>
 
-        <div className="bg-white h-[1000px] rounded-lg p-4">
+        <div className="bg-white rounded-lg p-4">
           <CountSkeleton/>
-          <p className="font-bold text-2xl">Graph</p>
+          <AttendanceLineChart data={data}/>
         </div>
       </div>
     )
   } catch (error) {
-      
   }
 }
 

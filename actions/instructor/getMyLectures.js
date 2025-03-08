@@ -22,7 +22,6 @@ export async function getCourses() {
         return { success: false, error: instructorCourseError.message };
     }
     const courseIds = instructorCourses.map(course => course.course_id);
-    console.log('Courses IDs:', courseIds)
 
     if (courseIds.length === 0) {
         return { success: true, courses: [], message: "No courses found" };
@@ -39,6 +38,5 @@ export async function getCourses() {
         return { success: false, error: courseError.message };
     }
 
-    console.log('COURSES:', courses)
     return { success: true, courses, message: "Courses retrieved successfully" };
 }

@@ -4,15 +4,10 @@ import AddACourse from "@/components/instructor/AddMyCoursesBtn";
 const MyLectures = async () => {
   try {
     const { success, courses, message } = await getCourses();
-    console.log("Courses data:", courses); // Debugging step
 
     if (!success) {
       return <p className="text-red-600">Failed to load courses: {message}</p>;
     }
-
-    // if (courses.length === 0) {
-    //   return <p className="text-red-600">{message || "No courses found."}</p>;
-    // }
 
     return (
       <div className="flex flex-col gap-10">

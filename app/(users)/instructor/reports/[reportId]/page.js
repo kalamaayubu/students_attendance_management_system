@@ -19,7 +19,8 @@ const CourseReportPage = async ({params}) => {
             return <div className="text-gray-500">No attendance records found.</div>
         }
         return (
-            <div id="report-table" className="bg-white p-4 relative w-fit">
+            <div className="bg-red-900">
+            <div id="report-table" className="bg-white p-4 relative w-fit m-auto">
                 <Image src={'/assets/kibuLogo.png'} height={800} width={800} alt="Logo" className="w-40 m-auto"/>
                 <DownloadReport report={report} />
                 <h1 className="font-bold text-3xl mb-4 text-start mt-6">
@@ -40,6 +41,7 @@ const CourseReportPage = async ({params}) => {
                         {report[0]?.courses?.instructor_courses?.instructors?.profiles?.second_name}
                     </p>
                 </div>
+            </div>
             </div>
         )
 

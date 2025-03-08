@@ -17,7 +17,7 @@ export default function StudentLayout({ children }) {
         <nav>
           <Sidebar isOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
         </nav>
-        <main className="flex-1 h-full bg-lightGray p-4 overflow-y-auto">
+        <main className="flex-1 h-full bg-slate-100 bg-opacity-80 p-4 overflow-y-auto">
           {children}
         </main>
       </div>

@@ -1,15 +1,17 @@
 'use server';
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export async function enrollCourse(studentId, regNo, courseId, courseCode) {
   const supabase = await createClient();
-  console.log(`ENROLLMENT DATA: ${studentId}-${regNo}-${courseId}`)
 
   try {
     // Step 1: Insert into students table (ignore if exists(usage of upsert))
     const { data: studentData, error: studentError } = await supabase
       .from("students")
-      .upsert([{ id: studentId, reg_no: regNo }], {onConflict: 'id, reg_no'}
+      .upsert([{ id: studentId, reg_no: regNo }], {
+        onConflict: 'id'
+      }
     )
       .select('id')
       .maybeSingle()
@@ -24,25 +26,30 @@ export async function enrollCourse(studentId, regNo, courseId, courseCode) {
         return { success: false, error: "Failed to retrieve student record after insert." };
     }
   
-    console.log(`STUDENT(FROM TABLE): ${studentData.id}`);
-
-    // Step 2: Insert into enrollments table
-    const { error: enrollmentError } = await supabase
+    // Step 2: Try enrolling the student
+    const { count, error: enrollmentError } = await supabase
       .from("enrollments")
       .upsert([{ student_id: studentData.id, course_id: courseId }], {
-        onConflict: "student_id, course_id",
+        onConflict: ["student_id, course_id"],
+        ignoreDuplicates: true,
+        count: "exact",  // This tells us if a row was inserted/updated
       })
-      .maybeSingle();
+      .maybeSingle()
+
+      console.log("Enrollment count:", count);
 
     if (enrollmentError) {
       console.error("Enrollment error:", enrollmentError.message);
-
-      // Rollback: Delete student if enrollment fails
-      await supabase.from("students").delete().eq("id", studentId);
-
-      return { success: false, error: "Enrollment failed. Rolled back student record." };
+      return { success: false, error: "Enrollment failed. Please try again later." };
     }
 
+    // If count is 0, that means the row already existed (no new insert happened)
+    if (count === null) {
+      return { success: false, error: `${courseCode} already enrolled.` };
+    }
+
+    // Revalidate student dashboard
+    revalidatePath('/student/dashboard');
     return {
       success: true,
       message: `${courseCode} enrolled successfully`,

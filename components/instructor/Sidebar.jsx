@@ -23,7 +23,7 @@ import SelectReportCourse from "./SelectReportCourse";
 import { getUserId } from "@/utils/getUserId";
 import { getUserBio } from "@/utils/getUserBio";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, setSidebarOpen }) => {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null); // Track selected course
@@ -60,6 +60,13 @@ const Sidebar = ({ isOpen }) => {
       };
     };
   }, []);
+
+  // Hide the sidebar when user navigates to another page in mobile view
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  }, [pathname]);
 
   // Handle logout
   const handleLogout = async () => {
@@ -114,7 +121,7 @@ const Sidebar = ({ isOpen }) => {
   return (
     <div
       className={`${
-        isOpen ? "w-52" : "w-[52px] pt-2"
+        isOpen ? "w-52" : "w-0 md:w-[52px] pt-2"
       } transition-all duration-50 relative flex flex-col h-full`}
     >
       <div className="p-3">

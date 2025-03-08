@@ -5,7 +5,6 @@ const EnrolledCoursesPage = async () => {
     try {
         const studentId = await getUserId()
 
-        // Enl
         if (!studentId) {
             console.error("Student ID not found");
             return <p>Student ID not available</p>;
@@ -21,14 +20,14 @@ const EnrolledCoursesPage = async () => {
         }
 
         return (
-            <div>
+            <div className="p-4">
                 <div>
-                    <h1 className="text-3xl lg:text-4xl">Enrolled Courses</h1>
-                    <div className="bg-white p-4 w-fit rounded-lg">
-                        <ol className="list-decimal px-2 pr-3">
+                    <h1 className="text-2xl">Enrolled Courses</h1>
+                    <div className="bg-white w-fit shadow-md border border-gray-200">
+                        <ol className="pt-2 pb-2">
                             {res.map((course, index) => (
                                 <div key={index}>
-                                    <li className="flex gap-6 mb-2">
+                                    <li className="flex gap-6 px-8 py-[6px]">
                                         <span className="font-semibold">{course.courses?.course_code}</span>
                                         <span>{course.courses?.course_name}</span>
                                     </li>

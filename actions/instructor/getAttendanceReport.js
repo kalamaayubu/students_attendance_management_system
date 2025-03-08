@@ -38,6 +38,5 @@ export async function getAttendanceReport(courseId) {
         return { success: false, error: error.message }
     }
 
-    console.log('✅ Raw Attendance Report:', JSON.stringify(data, null, 2)); // Pretty print JSON
     return { success: true, data }
 }

@@ -15,10 +15,9 @@ export async function getEnrolledCourses(studentId) {
         .from('enrollments')
         .select(`
             course_id,
-            courses(course_code, course_name),
-            students(student_id)
+            courses(course_code, course_name)
         `)
-        .eq('students.student_id', studentId)
+        .eq('student_id', studentId)
 
     if (error) {
         console.error("Error fetching enrolled courses:", error);

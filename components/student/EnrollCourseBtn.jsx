@@ -19,6 +19,8 @@ const EnrollCourseBtn = ({ courseCode, courseId }) => {
 
     try {
       const studentId = getUserId();
+
+      // Enroll to the selected course
       const res = await enrollCourse(
         await studentId,
         regNumber,

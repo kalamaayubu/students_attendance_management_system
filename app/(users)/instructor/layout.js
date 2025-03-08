@@ -15,7 +15,7 @@ export default function InstructorLayout({ children }) {
 
       <div className="flex gap-0 h-full pt-[70px]">
         <nav>
-          <Sidebar isOpen={sidebarOpen}/>
+          <Sidebar isOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
         </nav>
         <main className="flex-1 h-full bg-lightGray p-4 lg:p-6 xl:p-8 overflow-y-auto">
           {children}
