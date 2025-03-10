@@ -1,8 +1,9 @@
 import { getAllCoursesCount } from "@/actions/getAllCoursesCount";
 import { getAttendanceData } from "@/actions/instructor/getAttendanceChartData";
 import { getCoursesCount } from "@/actions/instructor/getCoursesCount";
-import { CountSkeleton } from "@/components/CountSkeleton";
+import { getStudentsInEachCourse } from "@/actions/instructor/getStudentsInEachCourse";
 import AttendanceLineChart from "@/components/instructor/AttendanceLineChart";
+import StudentsPieChart from "@/components/instructor/StudentsPieChart";
 import StatsCard from "@/components/StatsCard";
 import { getUserId } from "@/utils/getUserId";
 import { BookCheckIcon, Presentation, TrendingUp } from "lucide-react";
@@ -13,8 +14,9 @@ const InstructorDashboard = async () => {
   try {
     const coursesCount = await getCoursesCount(instructorId); // Instructor's courses
     const allCoursesCount = await getAllCoursesCount() // All courses offered
-    const data = await getAttendanceData(instructorId); // Attendance data for visualization
-    console.log('Fetched chart data', data)
+    const attendanceChartData = await getAttendanceData(instructorId); // Attendance data for visualization
+    const studentsInEachCourse = await getStudentsInEachCourse(instructorId); // Students in each course
+    console.log('Pie chart data', studentsInEachCourse)
 
   const stats = [
     { icon: Presentation, title: "My Lectures", count: `${coursesCount}`, color: "#1D4ED8", shadowColor: "#60A5FA", percentage: "4.5", trendIcon: TrendingUp },
@@ -27,12 +29,12 @@ const InstructorDashboard = async () => {
           {stats.map((stat, index) => (
             <StatsCard key={index} {...stat}/>
           ))}
+          <div className="min-w-[250px] min-h-[155px] bg-white rounded-lg"></div>
+          <div className="min-w-[250px] min-h-[155px] bg-white rounded-lg"></div>
         </div>
 
-        <div className="bg-white rounded-lg p-4">
-          <CountSkeleton/>
-          <AttendanceLineChart data={data}/>
-        </div>
+          <AttendanceLineChart data={attendanceChartData}/>
+          <StudentsPieChart pieData={studentsInEachCourse}/>
       </div>
     )
   } catch (error) {

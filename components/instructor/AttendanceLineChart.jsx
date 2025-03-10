@@ -32,7 +32,7 @@ const AttendanceLineChart = ({ data }) => {
   ];
   console.log("COURSE CODES:", courseCodes);
   return (
-    <div>
+    <div className="bg-white rounded-lg p-4">
       <h3 className="text-2xl font-bold mb-4 text-center">
         Attendance statistics
       </h3>
