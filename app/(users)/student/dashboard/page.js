@@ -1,7 +1,7 @@
 import { getAllCoursesCount } from "@/actions/getAllCoursesCount";
-import { getEnrolledCourses } from "@/actions/student/getStats";
-import { CountSkeleton } from "@/components/CountSkeleton";
+import { getAttendanceForCourses, getEnrolledCourses } from "@/actions/student/getStats";
 import StatsCard from "@/components/StatsCard";
+import AttendancePieChart from "@/components/student/AttendancePieChart";
 import { getUserId } from "@/utils/getUserId";
 import { BookCheck, Library, Newspaper, Plane, TrendingDown, TrendingUp, Users } from "lucide-react";
 
@@ -13,9 +13,13 @@ const StudentDasboard = async () => {
     const enrolledCoursesCount = await getEnrolledCourses(studentId);
     if (enrolledCoursesCount === 0) {return}
 
-    // 
+    // Get the count of all courses offered
     const allCoursesCount = await getAllCoursesCount();
     if (allCoursesCount === 0) {return}
+
+    // Get the attendance statistics for each course
+    const attendanceStats = await getAttendanceForCourses(studentId)
+    if (attendanceStats.length === 0) {return <p>No attendance record found</p>}
 
   const stats = [
     { icon: Library, title: "Enrolled courses", count: `${enrolledCoursesCount}`, color: "#1D4ED8", shadowColor: "#60A5FA", percentage: "4.5", trendIcon: TrendingUp },
@@ -28,20 +32,16 @@ const StudentDasboard = async () => {
           {stats.map((stat, index) => (
             <StatsCard key={index} {...stat}/>
           ))}
-          <div className="shadow-md rounded-lg p-4 bg-white size-52">
-            The pie chart will go here
-          </div>
         </div>
 
-        <div className="bg-white h-[1000px] rounded-lg p-4">
-          <p className="font-bold text-2xl">Graph</p>
-          <CountSkeleton/>
+        <div className="bg-white rounded-lg p-4 shadow-lg">
+          <AttendancePieChart attendanceStats={attendanceStats}/>
         </div>
       </div>
     )
-} catch (error) {
-  console.error(error)
-}
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export default StudentDasboard

@@ -12,18 +12,18 @@ const MyLectures = async () => {
     return (
       <div className="flex flex-col gap-10">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl md:text-3xl xl:text-4xl">My Courses</h1>
+          <h1 className="gradient-text text-[19px]">My Courses</h1>
           <AddACourse />
         </div>
         {courses.length > 0 && (
-          <div className="bg-white p-4 w-fit rounded-lg">
-          <ol className="list-decimal pl-6">
+          <div className="bg-white w-fit shadow-md border border-gray-200">
+          <ol className="pt-2 pb-2">
             {courses.map((course, index) => (
               <div key={course.id}>
-              <li className="flex gap-6 mb-2">
-                <span className="font-semibold">{course.course_code}</span>
-                <span>{course.course_name}</span>
-              </li>
+                <li className="flex gap-6 px-8 py-[6px]">
+                  <span className="font-semibold">{course.course_code}</span>
+                  <span>{course.course_name}</span>
+                </li>
               {index !== courses.length - 1 && ( // Add separator ONLY if not the last item
                 <div className="my-2 h-[1px] w-full bg-gray-300" />
               )}              

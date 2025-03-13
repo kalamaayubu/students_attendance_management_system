@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 const AttendanceLineChart = ({ data }) => {
-  console.log("Chart data:", data);
   // Extract unique course codes dynamically
   const courseCodes = [
     ...new Set(
@@ -30,7 +29,6 @@ const AttendanceLineChart = ({ data }) => {
     "#800080",
     "#FFC0CB",
   ];
-  console.log("COURSE CODES:", courseCodes);
   return (
     <div className="bg-white rounded-lg p-4">
       <h3 className="text-2xl font-bold mb-4 text-center">

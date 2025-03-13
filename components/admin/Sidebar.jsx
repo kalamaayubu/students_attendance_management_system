@@ -3,32 +3,26 @@
 import { logout } from "@/actions/auth/logout";
 import {
   Bell,
-  Book,
-  BotIcon,
   ChartLine,
   ChevronUp,
   GraduationCap,
   LayoutDashboard,
-  Library,
   LibraryBig,
   LogOut,
-  NewspaperIcon,
   Settings,
   User,
-  User2Icon,
   UserCog,
   UserPen,
-  UserPlus,
   Vibrate,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import TooltipWrapper from "../TooltipWrapper";
 import { getUserId } from "@/utils/getUserId";
 import { getUserBio } from "@/utils/getUserBio";
 
-const Sidebar = ({ isOpen, setSidebarOpen }) => {
+const Sidebar = ({ isOpen, setSidebarOpen, isSmallScreen }) => {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const logoutRef = useRef(null);
   const router = useRouter();
@@ -56,11 +50,11 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
       if (logoutRef.current && !logoutRef.current.contains(e.target)) {
         setIsLogoutOpen(false);
       }
+    };
 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -155,7 +149,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
       <div
         className={`absolute bottom-0 w-full overflow-y-clip ${
           isLogoutOpen ? "pt-12" : "h-12"
-        } ${isOpen ? "" : ""}`}
+        } ${isOpen ? "" : `-translate-x-10`}`}
       >
         <TooltipWrapper
           label={`${userBio.first_name} ${userBio.second_name}`}

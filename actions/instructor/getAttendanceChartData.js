@@ -26,7 +26,7 @@ export async function getAttendanceData(instructorId) {
 
 
     // Step 1: Count attendance per schedule_id
-    const scheduleMap = new Map(); // Keeps order of insertion
+    const scheduleMap = new Map(); // Keeps order of insertion as opposed to []
     data.forEach(({ schedule_id, schedules}) => {
       const courseCode = schedules.courses.course_code;
       const startTime = schedules.start_time;
@@ -80,5 +80,5 @@ export async function getAttendanceData(instructorId) {
       sessionObj[courseCode] = count; // Example: { session: 1, CS101: 10 } 
     });
 
-    return mergedData
+  return mergedData
 }

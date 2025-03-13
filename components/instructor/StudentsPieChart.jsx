@@ -34,7 +34,8 @@ const StudentsPieChart = ({ pieData }) => {
             data={pieData}
             cx="50%"
             cy="50%"
-            outerRadius={75}
+            outerRadius="80%"
+            innerRadius="60%"
             fill="#8884d8"
             dataKey={"students"}
             nameKey={"course"}

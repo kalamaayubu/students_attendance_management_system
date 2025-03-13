@@ -8,7 +8,7 @@ dayjs.extend(timezone);
 import ReusableDialog from "../ReusableDialog";
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2Icon } from "lucide-react";
+import { CheckCircle2Icon, X } from "lucide-react";
 
 const UpcomingClassCard = ({
   scheduleData,
@@ -54,6 +54,9 @@ const UpcomingClassCard = ({
                 <span>
                   {isAttendanceMarked && (
                     <CheckCircle2Icon className="text-green-600" />
+                  )}
+                  {!isAttendanceMarked && status === "past" && (
+                    <X className="text-red-700" />
                   )}
                 </span>
               </p>

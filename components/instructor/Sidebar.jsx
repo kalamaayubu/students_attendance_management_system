@@ -23,7 +23,7 @@ import SelectReportCourse from "./SelectReportCourse";
 import { getUserId } from "@/utils/getUserId";
 import { getUserBio } from "@/utils/getUserBio";
 
-const Sidebar = ({ isOpen, setSidebarOpen }) => {
+const Sidebar = ({ isOpen, setSidebarOpen, isSmallScreen }) => {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null); // Track selected course
@@ -53,11 +53,11 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
       if (logoutRef.current && !logoutRef.current.contains(e.target)) {
         setIsLogoutOpen(false);
       }
+    };
 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -122,7 +122,7 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
     <div
       className={`${
         isOpen ? "w-52" : "w-0 md:w-[52px] pt-2"
-      } transition-all duration-50 relative flex flex-col h-full`}
+      } transition-all duration-50 relative flex flex-col h-full z-40`}
     >
       <div className="p-3">
         {menuItems?.map((item) => (
@@ -185,10 +185,11 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
         </div>
       </ReusableDialog>
 
+      {/* The sidebar footer */}
       <div
         className={`absolute bottom-0 w-full overflow-y-clip ${
           isLogoutOpen ? "pt-12" : "h-12"
-        } ${isOpen ? "" : ""}`}
+        } ${isOpen ? "" : "-translate-x-10"}`}
       >
         <TooltipWrapper
           label={`${userBio.first_name} ${userBio.second_name}`}
@@ -214,13 +215,12 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
 
         <div
           ref={logoutRef}
-          className={` ${isLogoutOpen ? "block" : "translate-y-40"} ${
-            isOpen ? "shadow-lg mx-2 p-2" : "gap-1 shadow-md p-[4px]"
+          className={`${isLogoutOpen ? "block" : "translate-y-40"} ${
+            isOpen ? `shadow-lg mx-2 p-2` : "gap-1 shadow-md p-[4px]"
           } flex flex-col z-10 rounded-md bg-white border transition-all duration-300 -translate-y-[40px]`}
         >
           <TooltipWrapper label="Settings" isSidebarOpen={isOpen}>
             <button
-              title={`${!isOpen ? "Settings" : ""}`}
               className={` ${
                 isOpen ? "px-3 py-2" : ""
               } whitespace-nowrap hover:bg-lightGray rounded-md flex items-center gap-2`}
@@ -231,7 +231,6 @@ const Sidebar = ({ isOpen, setSidebarOpen }) => {
           </TooltipWrapper>
           <TooltipWrapper label="Notifications" isSidebarOpen={isOpen}>
             <button
-              title={`${!isOpen ? "Notifications" : ""}`}
               className={` ${
                 isOpen ? "px-3 py-2" : ""
               } whitespace-nowrap hover:bg-lightGray rounded-md flex items-center gap-2`}

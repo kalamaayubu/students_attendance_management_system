@@ -1,17 +1,43 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    async rewrites() {
-        return [
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
           {
-            source: '/OneSignalSDK.sw.js',
-            destination: '/OneSignalSDKWorker.js',
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
           },
           {
-            source: '/OneSignalSDKUpdaterWorker.js',
-            destination: '/OneSignalSDKUpdaterWorker.js',
+            key: 'X-Frame-Options',
+            value: 'DENY',
           },
-        ];
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
       },
+      {
+        source: '/sw.js',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/javascript; charset=utf-8',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self'",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
