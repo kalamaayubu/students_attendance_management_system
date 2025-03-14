@@ -1,6 +1,7 @@
 import ReduxProvider from "@/redux/ReduxProvider"
 import "../styles/globals.css"
 import ToastProvider from "@/components/ToastProvider"
+import ServiceWorkerRegistration from "@/utils/notification/ServiceWorkerRegistration"
 
 const RootLayout = ({ children }) => {
   return (
@@ -9,6 +10,7 @@ const RootLayout = ({ children }) => {
           <body>
             { children }
             <ToastProvider/>
+            <ServiceWorkerRegistration/>
           </body>
         </ReduxProvider>
     </html>
