@@ -21,7 +21,7 @@ export default function StudentLayout({ children }) {
   }, [])
 
   return (
-    <div className="bg-white h-screen flex flex-col relative">
+    <div className="bg-white h-screen flex flex-col relative overflow-hidden">
       <header className="bg-white p-4 py-2 fixed top-0 left-0 right-0 shadow-md z-50">
         <AdminHeader toggleSideBar={() => setSidebarOpen(prev => !prev)}/>
       </header>

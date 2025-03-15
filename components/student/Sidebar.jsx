@@ -144,7 +144,7 @@ const Sidebar = ({ isOpen, setSidebarOpen, isSmallScreen }) => {
       <div
         className={`absolute bottom-0 w-full overflow-y-clip ${
           isLogoutOpen ? "pt-12" : "h-12"
-        } ${isOpen ? "" : "-translate-x-10"}`}
+        } ${isOpen ? "" : ""} ${isSmallScreen && !isOpen && "-translate-x-10"}`}
       >
         <TooltipWrapper
           label={`${userBio.first_name} ${userBio.second_name}`}
