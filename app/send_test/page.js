@@ -12,6 +12,7 @@ export default function SendPage() {
     const res = await sendNotification("Hello!", "This is a test notification.");
     if (!res.success) {
         toast.error(res.error)
+        setLoading(false)
         return
     }
 

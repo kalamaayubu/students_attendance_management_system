@@ -32,7 +32,7 @@ export async function subscribeUser() {
     const permission = await Notification.requestPermission();
 
     if (permission !== "granted") {
-        console.warn("User denied push notification permissions.");
+        alert("User denied push notification permissions.");
         return;
     }
 
@@ -40,7 +40,7 @@ export async function subscribeUser() {
         const registration = await navigator.serviceWorker.ready
 
         if (!registration) {
-            console.error("Service Worker is not ready yet");
+            alert("Service Worker is not ready yet");
             return;
         }
 

@@ -20,7 +20,6 @@ export async function sendNotification(title, message) {
     }
     console.log("Fetched Subscriptions:", subscriptions);
 
-
     if (!subscriptions.length) {
         return { success: false, error: "No active subscriptions found" };
     }
@@ -68,6 +67,7 @@ export async function sendNotification(title, message) {
                 console.warn("Subscription expired, removing from DB:", sub.endpoint);
                 await supabase.from("push_subscriptions").delete().eq("endpoint", sub.endpoint);
                 expiredSubs++;
+                return {success: false, error: 'Something went wrong. Please try again'}
             } else {
                 console.error("Push send failed:", err.statusCode, err.body || err);
                 failures++;

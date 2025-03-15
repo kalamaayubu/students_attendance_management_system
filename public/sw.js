@@ -1,45 +1,55 @@
-self.addEventListener('push', async (event) => {
-    console.log("Push Event Received:", event.data);
+self.addEventListener("push", async (event) => {
+    console.log("🔥 Push Event Received:", event.data);
 
     if (!event.data) {
-        console.warn("Push event received but no data available.");
+        console.warn("⚠️ Push event received but no data available.");
         return;
     }
 
     let data;
     try {
-        const textData = await event.data.text(); // ✅ Extract text from event.data
-        console.log("Raw Push Data:", textData); // ✅ Log the raw data
-        const data = JSON.parse(textData); // ✅ Parse JSON
-
-        // ✅ Show notification
-        self.registration.showNotification(data.title || "Notification", {
-            body: data.message || "No message provided",
-            icon: data.icon || "/icons/attendMeIcon2.webp",
-            data: { url: data.url || "/student/schedules" }, // Store the target URL in notification data
-        });
+        const textData = await event.data.text();
+        console.log("📩 DEBUGGING; Raw Push Data:", textData);
+        data = JSON.parse(textData);
     } catch (err) {
-        console.warn("Received invalid JSON. Using as plain text.");
-        data = { title: "Notification", message: textData }; // Handle raw text case
+        console.warn("⚠️ Invalid JSON. Using as plain text.");
+        data = { title: "Notification", message: textData };
     }
-});
 
-self.addEventListener('notificationclick', (event) => {
-    event.notification.close() // Close notification on click
-
-    const targetUrl = event.notification.data?.url || "/student/schedules"; // Get URL from notification
+    console.log("🔔 Attempting to Show Notification:", data);
 
     event.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true }) // Get all open windows (including the ones not controlled by the service worker)
-        .then((clientList) => {
-            for (const client of clientList) { // Loop through all open client windows
-                if (client.url.includes(targetUrl) && "focus" in client) { // Check if the targe url is already open
-                    return client.focus(); // Bring the existing tab into focus instead of opening a new one
-                }
-            }
+        self.registration.showNotification(data.title || "Notification", {
 
-            // If not open, open a new window/tab with the target URL
-            return clients.openWindow(targetUrl) 
+            body: data.message || "No message provided",
+            icon: data.icon || "/icons/attendMeIcon2.webp",
+            data: { url: data.url || "/student/schedules" },
+        }).then(() => {
+            console.log("✅ Notification Displayed Successfully!");
+        }).catch((err) => {
+            console.error("❌ Failed to show notification:", err);
         })
     )
-})
+});
+
+self.addEventListener("notificationclick", (event) => {
+    console.log("🖱️ Notification Clicked!", event.notification);
+
+    event.notification.close();
+
+    const targetUrl = event.notification.data?.url || "/student/schedules";
+
+    event.waitUntil(
+        clients.matchAll({ type: "window", includeUncontrolled: true })
+        .then((clientList) => {
+            for (const client of clientList) {
+                if (client.url.includes(targetUrl) && "focus" in client) {
+                    console.log("🔄 Focusing Existing Tab:", client.url);
+                    return client.focus();
+                }
+            }
+            console.log("🌍 Opening New Tab:", targetUrl);
+            return clients.openWindow(targetUrl);
+        })
+    );
+});
