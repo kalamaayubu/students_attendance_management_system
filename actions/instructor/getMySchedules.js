@@ -28,6 +28,5 @@ export async function getMySchedules(instructorId) {
         return { fetchSessionsSuccess: false, fetchSessionsError: fetchSessionsError.message }
     }
 
-    console.log('Instructor schedules data:', sessions)
     return { fetchSessionsSuccess: true, sessions }
 }

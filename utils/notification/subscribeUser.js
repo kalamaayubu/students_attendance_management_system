@@ -1,4 +1,5 @@
 import { saveSubscription } from "@/actions/notification/saveSubscription";
+import { getUserId } from "../getUserId";
 
 // Helper function to convert a Base64 URL-encoded VAPID public key to a Uint8Array
 function urlBase64ToUint8Array(base64String) {
@@ -58,7 +59,10 @@ export async function subscribeUser() {
             keys: subscription.toJSON().keys // Extract keys as a plain object
         }
 
-       await saveSubscription(subscriptionData) // Save subscription data to database
+        // Get the logged in user id
+        const userId = await getUserId()
+        console.log('User subscribed successfully:', subscriptionData)
+       await saveSubscription(subscriptionData, userId) // Save subscription data to database
     } catch (error) {
         console.error("Failed to subscribe:", error);
     }

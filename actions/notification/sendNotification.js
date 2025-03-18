@@ -1,5 +1,4 @@
-'use server'
-
+"use server";
 import { createClient } from "@/lib/supabase/server";
 import webpush from "web-push";
 
@@ -9,28 +8,17 @@ webpush.setVapidDetails(
     process.env.VAPID_PRIVATE_KEY
 );
 
-export async function sendNotification(title, message) {
+export async function sendNotification(title, message, subscriptions) {
     const supabase = await createClient();
-
-    // Fetch all push subscriptions
-    const { data: subscriptions, error } = await supabase.from("push_subscriptions").select("*");
-    if (error) {
-        console.error("Failed to fetch subscriptions:", error);
-        return { success: false, error: "Failed to retrieve subscriptions" };
-    }
-    console.log("Fetched Subscriptions:", subscriptions);
-
-    if (!subscriptions.length) {
+    
+    if (!subscriptions || subscriptions.length === 0) {
         return { success: false, error: "No active subscriptions found" };
     }
 
-    const payload = JSON.stringify({
-        title,
-        message,
-        url: "/student/schedules",
-    });
+    // Notification payload
+    const payload = JSON.stringify({ title, message, url: "/students/schedules" });
 
-    console.log("PUSH PAYLOAD:", payload);
+    console.log("🔔 PUSH PAYLOAD:", payload);
 
     let successes = 0;
     let failures = 0;
@@ -46,53 +34,36 @@ export async function sendNotification(title, message) {
                         p256dh: sub.p256dh,
                     },
                 },
-                payload,
-                {
-                    headers: {
-                        TTL: "60", // Time to live
-                        urgency: "high",
-                    }
-                }
+                payload
             );
-            successes++; // ✅ Track successful notifications
+            successes++; // ✅ Success counter
         } catch (err) {
             console.error("❌ Push notification failed:", {
                 statusCode: err.statusCode,
                 message: err.message,
-                body: err.body, // Include full response body
-                stack: err.stack // Log full error stack
+                body: err.body,
+                stack: err.stack
             });
-        
+
             if (err.statusCode === 410) {
                 console.warn("Subscription expired, removing from DB:", sub.endpoint);
                 await supabase.from("push_subscriptions").delete().eq("endpoint", sub.endpoint);
                 expiredSubs++;
-                return {success: false, error: 'Something went wrong. Please try again'}
             } else {
-                console.error("Push send failed:", err.statusCode, err.body || err);
                 failures++;
             }
         }
     }
 
-    // 📌 Return structured response based on outcomes
+    // 📌 Response handling
     if (successes > 0 && failures === 0) {
-        return { success: true, message: `Notifications sent successfully to ${successes} subscribers` };
+        return { success: true, message: `✅ Notifications sent to ${successes} subscribers` };
     } else if (successes > 0 && failures > 0) {
-        return { 
-            success: false, 
-            message: `Partial success: ${successes} notifications sent, ${failures} failed` 
-        };
+        return { success: false, message: `⚠️ Partial success: ${successes} sent, ${failures} failed` };
     } else if (failures > 0 && successes === 0) {
-        return { 
-            success: false, 
-            message: `All notifications failed. No notifications were sent.` 
-        };
+        return { success: false, message: `❌ All notifications failed.` };
     } else if (expiredSubs > 0 && successes === 0) {
-        return { 
-            success: false, 
-            message: `No active subscriptions left. ${expiredSubs} expired and were removed.` 
-        };
+        return { success: false, message: `🔄 No active subscriptions left. Removed ${expiredSubs} expired ones.` };
     }
 
     return { success: false, message: "Unknown error occurred" };

@@ -2,12 +2,11 @@
 import { createClient } from "@/lib/supabase/server"
 import QRCode from "qrcode"; // Import QRCode
 import { revalidatePath } from "next/cache";
+import { sendNotification } from "../notification/sendNotification";
 
 
 export async function scheduleSession({ courseId, instructorId, startTime, endTime, latitude, longitude, }) {
     const supabase = await createClient()
-    console.log("USERID::", instructorId);
-    console.log("COURSEID::", courseId);
 
     // STEP 1: Insert data into the schedules table
     const { data: insertScheduleData, error: insertScheduleError } = await supabase
@@ -70,34 +69,32 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
     }
 
     // STEP 4: Get the enrolled students and send notification to each
-    // const { data: students, error: studentsError } = await supabase
-    //     .from('enrollments')
-    //     .select('student_id')
-    //     .eq('course_id', courseId);
-
-    // console.log('Course enrolled by:', students)
+    const { data: students, error: studentsError } = await supabase
+        .from('enrollments')
+        .select('student_id')
+        .eq('course_id', courseId);
     
-    // if (studentsError) {
-    //     console.error('Error getting enrolled students:', studentsError)
-    //     return { success: false, error: studentsError.message || 'Failed to get enrolled students.' }
-    // }
+    if (studentsError) {
+        console.error('Error getting enrolled students:', studentsError)
+        return { success: false, error: studentsError.message || 'Failed to get enrolled students.' }
+    }
 
-    // // Map over the enrolled students to send them notifications
-    // if (students?.length > 0) {
-    //     const notificationResponse = await sendNotification(
-    //         students.map((s) => s.student_id),
-    //         'CSC000',
-    //         startTime
-    //     );
+    // STEP 5: Get notification subscriptions for enrolled students
+    const studentIds = students.map(s => s.student_id)
+    const { data: userEndPoints, error: pushError } = await supabase
+        .from("push_subscriptions")
+        .select("endpoint, auth, p256dh")
+        .in("id", studentIds)
 
-    //     if (!notificationResponse.success) {
-    //         console.error('Failed to send notifications:', notificationResponse.error);
-    //         return { success: false, error: "Failed to send notifications"}
-    //     }
+        console.log('User Endpoints:', userEndPoints)
 
-    //     console.log('Notifications sent to:', students)
-    // }
+    if (pushError) {
+        console.log('Error pushing notifications', pushError)
+        return { success: false, error: 'Failed to send messages to students.'}
+    }
 
+    // Send push notifications
+    await sendNotification("New schedule", "A new class has been scheduled. Please check it out", userEndPoints)
     revalidatePath('/students/schedules')
     return { success: true, message: "Session scheduled successfully!" };
 }

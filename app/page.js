@@ -3,19 +3,10 @@ import Footer from "@/components/general/Footer";
 import Hero from "@/components/general/Hero";
 import HowItWorks from "@/components/general/HowItWorks";
 import NavBar from "@/components/general/NavBar";
-import { subscribeUser } from "@/utils/notification/subscribeUser";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 
 export default function NotificationSetup() {
-    useEffect(() => {
-      const doSubscription = async () => {
-        await subscribeUser()
-      }
-      doSubscription()
-    }, []);
-
     return (
       <div>
         <NavBar/>

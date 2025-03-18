@@ -36,8 +36,6 @@ const Scheduling = ({ courses }) => {
 
       // Get the instructorId
       const instructorId = await getUserId();
-      console.log("USERID::", instructorId);
-      console.log("COURSEID::", selectedCourseId);
 
       if (selectedCourseId && instructorId) {
         const response = await scheduleSession({
