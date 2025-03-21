@@ -23,7 +23,11 @@ button {
 }
 
 .gradient-text {
-  @apply bg-gradient-to-br from-blue-700 from-20% via-purple-600 via-90% bg-clip-text text-transparent;
+  @apply bg-gradient-to-br from-blue-700 from-20% via-purple-600 via-95% bg-clip-text text-transparent;
+}
+
+.blue-purple-gradient {
+  @apply bg-gradient-to-br from-blue-800 from-20% via-purple-600 via-95%;
 }
 
 /* QR code scanning styles */

@@ -15,6 +15,6 @@ export async function logout() {
     cookieStore.delete('sb-refresh-token') // Delete access token
     cookieStore.delete('authState'); // Delete the authState cookie to remove user session data
 
-    // Redirect to the login page
-    redirect('/auth/login')
+    // Redirect to the home page
+    redirect('/')
 }

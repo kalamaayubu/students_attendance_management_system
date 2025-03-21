@@ -86,6 +86,7 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
         .select("endpoint, auth, p256dh")
         .in("id", studentIds)
 
+        console.log('Sessions enrolled students:', studentIds)
         console.log('User Endpoints:', userEndPoints)
 
     if (pushError) {
@@ -94,7 +95,9 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
     }
 
     // Send push notifications
+    console.log('💻 Session scheduled successfully')
     await sendNotification("New schedule", "A new class has been scheduled. Please check it out", userEndPoints)
+
     revalidatePath('/students/schedules')
     return { success: true, message: "Session scheduled successfully!" };
 }

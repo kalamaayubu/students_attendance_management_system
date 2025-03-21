@@ -9,6 +9,7 @@ import {
   ChevronUp,
   LayoutDashboard,
   Library,
+  Loader,
   LogOut,
   Settings,
   User,
@@ -26,6 +27,7 @@ import { getUserBio } from "@/utils/getUserBio";
 const Sidebar = ({ isOpen, setSidebarOpen, isSmallScreen }) => {
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLogingOut, setIsLogingOut] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null); // Track selected course
   const logoutRef = useRef(null);
   const router = useRouter();
@@ -70,6 +72,7 @@ const Sidebar = ({ isOpen, setSidebarOpen, isSmallScreen }) => {
 
   // Handle logout
   const handleLogout = async () => {
+    setIsLogingOut(true);
     try {
       await logout();
       toast.success("Successfully loged out.");
@@ -248,8 +251,17 @@ const Sidebar = ({ isOpen, setSidebarOpen, isSmallScreen }) => {
                 isOpen ? "px-3 py-2" : ""
               } whitespace-nowrap hover:bg-gradient-to-br hover:from-blue-800 hover:to-purple-600 hover:text-white rounded-md flex items-center gap-2`}
             >
-              <LogOut className={`size-4`} />
-              <span className={`${isOpen ? "" : "hidden"}`}>Logout</span>
+              {isLogingOut ? (
+                <>
+                  <Loader className={`animate-spin`} />
+                  <span className="animate-pulse">Loging out</span>
+                </>
+              ) : (
+                <>
+                  <LogOut className={`size-4`} />
+                  <span className={`${isOpen ? "" : "hidden"}`}>Logout</span>
+                </>
+              )}
             </button>
           </TooltipWrapper>
         </div>

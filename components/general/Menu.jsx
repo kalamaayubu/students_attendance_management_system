@@ -7,10 +7,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { Loader } from "lucide-react";
 
 const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [user, setUser] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
 
   // Check authorization of user
@@ -30,9 +32,19 @@ const Menu = () => {
 
   // Handle logout
   const handleLogout = async () => {
-    await logout();
-    toast.success("Successfully logged out.");
-    router.push("/auth/login");
+    setIsProcessing(true);
+    try {
+      await logout();
+      toast.success("Successfully logged out.");
+      router.replace("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      toast.success("Successfully logged out.");
+      router.replace("/");
+    } finally {
+      setIsProcessing(false);
+      setUser(null);
+    }
   };
 
   return (
@@ -45,9 +57,16 @@ const Menu = () => {
         <Link href={"/instructor/dashboard"}>Instructor</Link>
         <Link href={"/admin/dashboard"}>Admin</Link>
         <p>Contacts</p>
-        <button className="px-4 text-white py-2 rounded-md bg-gradient-to-br from-blue-800 to-purple-600 outline-none">
+        <button
+          disabled={isProcessing}
+          className="px-4 text-white py-2 rounded-md bg-gradient-to-br from-blue-800 to-purple-600 outline-none"
+        >
           {user ? (
-            <span onClick={handleLogout}>Logout</span>
+            isProcessing ? (
+              <Loader className="animate-spin" />
+            ) : (
+              <span onClick={handleLogout}>Logout</span>
+            )
           ) : (
             <Link href={"/auth/login"}>Login</Link>
           )}
