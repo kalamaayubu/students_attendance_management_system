@@ -87,11 +87,7 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
         .in("id", studentIds)
 
         console.log('Sessions enrolled students:', studentIds)
-<<<<<<< HEAD
-        console.log('User Endpoints:', userEndPoints)
-=======
-        console.log('User Endpoints:', tokens)
->>>>>>> 51d9381 (Update: Implementation of the notification module with Firebase Cloud Messaging(FCM) service.)
+        console.log('User Tokens:', tokens)
 
     if (tokensError) {
         console.log('Error pushing notifications', tokensError)
@@ -100,11 +96,7 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
 
     // Send push notifications
     console.log('💻 Session scheduled successfully')
-<<<<<<< HEAD
-    await sendNotification("New schedule", "A new class has been scheduled. Please check it out", userEndPoints)
-=======
     await sendNotification("New schedule", "A new class has been scheduled. Please check it out", tokens)
->>>>>>> 51d9381 (Update: Implementation of the notification module with Firebase Cloud Messaging(FCM) service.)
 
     revalidatePath('/students/schedules')
     return { success: true, message: "Session scheduled successfully!" };
