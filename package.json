@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@firebase/messaging": "^0.12.17",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-select": "^2.1.6",
@@ -24,6 +25,8 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "dialog": "^0.3.1",
+    "firebase": "^11.5.0",
+    "firebase-admin": "^13.2.0",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
     "jspdf": "^3.0.0",

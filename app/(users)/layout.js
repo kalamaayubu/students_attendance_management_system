@@ -1,4 +1,4 @@
-import NotificationPermission from "@/utils/notification/NotificationPermission"
+import NotificationPermission from "@/utils/notification/firebase/NotificationPermission"
 
 const UsersLayout = ({ children  }) => {
   return (

@@ -2,7 +2,7 @@
 import { createClient } from "@/lib/supabase/server"
 import QRCode from "qrcode"; // Import QRCode
 import { revalidatePath } from "next/cache";
-import { sendNotification } from "../notification/sendNotification";
+import { sendNotification } from "../notification/firebase/sendNotification";
 
 
 export async function scheduleSession({ courseId, instructorId, startTime, endTime, latitude, longitude, }) {
@@ -81,22 +81,30 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
 
     // STEP 5: Get notification subscriptions for enrolled students
     const studentIds = students.map(s => s.student_id)
-    const { data: userEndPoints, error: pushError } = await supabase
+    const { data: tokens, error: tokensError } = await supabase
         .from("push_subscriptions")
         .select("endpoint, auth, p256dh")
         .in("id", studentIds)
 
         console.log('Sessions enrolled students:', studentIds)
+<<<<<<< HEAD
         console.log('User Endpoints:', userEndPoints)
+=======
+        console.log('User Endpoints:', tokens)
+>>>>>>> 51d9381 (Update: Implementation of the notification module with Firebase Cloud Messaging(FCM) service.)
 
-    if (pushError) {
-        console.log('Error pushing notifications', pushError)
-        return { success: false, error: 'Failed to send messages to students.'}
+    if (tokensError) {
+        console.log('Error pushing notifications', tokensError)
+        return { success: false, error: 'Failed to fetch FCM tokens.'}
     }
 
     // Send push notifications
     console.log('💻 Session scheduled successfully')
+<<<<<<< HEAD
     await sendNotification("New schedule", "A new class has been scheduled. Please check it out", userEndPoints)
+=======
+    await sendNotification("New schedule", "A new class has been scheduled. Please check it out", tokens)
+>>>>>>> 51d9381 (Update: Implementation of the notification module with Firebase Cloud Messaging(FCM) service.)
 
     revalidatePath('/students/schedules')
     return { success: true, message: "Session scheduled successfully!" };
