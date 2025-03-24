@@ -32,14 +32,14 @@ self.addEventListener("push", async (event) => {
         data = JSON.parse(textData);
     } catch (err) {
         console.warn("⚠️ Invalid JSON. Using as plain text.");
-        data = { title: "Notification", message: textData };
+        data = { title: "AttendMe", message: textData };
     }
 
     console.log("🔔 Attempting to Show Notification:", data);
 
     event.waitUntil(
-        self.registration.showNotification(data.title || "Notification", {
-            body: data.message || "No message provided",
+        self.registration.showNotification(data.title || "AttendMe", {
+            body: data.message || "You have a new message. Check it out.",
             icon: data.icon || "/icons/attendMeIcon2.webp",
             data: { url: data.url || "/student/schedules" },
         }).then(() => {
