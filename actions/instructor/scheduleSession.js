@@ -83,7 +83,7 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
     const studentIds = students.map(s => s.student_id)
     const { data: tokens, error: tokensError } = await supabase
         .from("push_subscriptions")
-        .select("endpoint, auth, p256dh")
+        .select("endpoint")
         .in("id", studentIds)
 
         console.log('Sessions enrolled students:', studentIds)
