@@ -59,7 +59,7 @@ export async function scheduleSession({ courseId, instructorId, startTime, endTi
         const { error: deleteError } = await supabase
         .from("schedules")
         .delete()
-        .eq("id", scheduleId); // Assuming 'id' is the primary key in the schedules table
+        .eq("id", scheduleId);
 
         if (deleteError) {
             console.error("Error rolling back schedule:", deleteError);
