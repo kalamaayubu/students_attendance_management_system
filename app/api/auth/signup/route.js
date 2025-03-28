@@ -5,7 +5,7 @@ import { deleteUser } from "@/utils/deleteUser";
 export async function POST(req) {
     try {
         const supabase = await createClient();
-        const { firstName, secondName, email, phone, password } = await req.json(); // Get form data
+        const { firstName, secondName, email, password } = await req.json(); // Get form data
 
         // Step 1: Create user using Supabase Auth API
         const { data: user, error: authError } = await supabase.auth.signUp({ email, password });
@@ -45,13 +45,15 @@ export async function POST(req) {
                     first_name: firstName,
                     second_name: secondName,
                     email: email,
-                    phone: phone,
                     role: role,
                 }
             ])
 
+        if(insertProfileError === 23505) {
+            return NextResponse.json({success: false, error: 'User already exist.'}, {status: 400})
+        }
         if (insertProfileError) {
-            console.error("Profile insertion failed:", insertProfileError.message);
+            console.error("Profile insertion failed:", insertProfileError.code);
             // Delete the user in auth.users for data consistency
             const deleteResponse = await deleteUser(userId)
             if (!deleteResponse.success) {

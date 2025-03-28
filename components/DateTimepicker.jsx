@@ -21,7 +21,7 @@ const DateTimePicker = ({ onFromChange, onToChange }) => {
 
   return (
     <div className="flex flex-col w-full m-auto lg:w-fit max-w-[500px]">
-      <div className="flex flex-col lg:flex-row gap-6 bg-white border rounded-lg p-4 shadow-lg">
+      <div className="flex flex-col lg:flex-row gap-6 bg-white border rounded-lg p-4">
         <div className="flex flex-col gap-2 w-full">
           <p className="font-semibold">From (Date & Time)</p>
           <input

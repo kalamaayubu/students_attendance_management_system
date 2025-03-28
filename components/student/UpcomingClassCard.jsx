@@ -47,7 +47,7 @@ const UpcomingClassCard = ({
         onOpenChange={setDialogOpen}
         title={dialogMessage}
         trigger={
-          <div className="p-4 mb-2 cursor-pointer bg-white rounded-lg shadow-md shadow-gray-400 hover:shadow-lg hover:shadow-gray-400 transition-all duration-300">
+          <div className="p-4 mb-2 cursor-pointer bg-white rounded-lg shadow-md shadow-gray-400 hover:shadow-lg border hover:shadow-gray-400 transition-all duration-300">
             <div className="mb-4">
               <p className="font-bold flex items-center justify-between">
                 <span>{scheduleData.course_code}</span>

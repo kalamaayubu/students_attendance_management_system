@@ -53,16 +53,16 @@ const SchedulesPage = async () => {
         })
 
         return (
-            <div className="lg:p-5 xl:p-6">
-                <div className="flex flex-col gap-8 mt-10">
-                    <div className="">
+            <div className="">
+                <div className="flex flex-col gap-8">
+                    <div className="bg-white p-5">
                         <h1 className="text-[18px] bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text mb-2 text-center lg:text-start">Schedule a lesson</h1>
                         <Scheduling courses={courses}/>
                     </div>
 
                     {/* Ongoing sessions */}
                     {ongoing.length > 0 && (
-                        <div className="mt-10">
+                        <div className="mt-10 bg-white p-6">
                             <h2 className="text-[18px] bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text">Ongoing sessions</h2>
                             <div className="">
                                 {ongoing.length > 0 && (
@@ -79,7 +79,7 @@ const SchedulesPage = async () => {
                     
                     {/* Upcomming sessions */}
                     {upcoming.length > 0 && (
-                        <div className="mt-10">
+                        <div className="mt-10 p-6 bg-white">
                             <h2 className="text-[18px] bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text">Upcoming sessions</h2>
                             <div className="">
                                 {upcoming.length > 0 && (
@@ -95,8 +95,8 @@ const SchedulesPage = async () => {
 
                     {/* Past sessions */}
                     {past.length > 0 && (
-                        <div className="mt-10">
-                            <h2 className="text-[18px] bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text">Last two days</h2>
+                        <div className="mt-10 bg-white p-5 flex flex-col items-center">
+                            <h2 className="text-[18px] mb-6 bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text">Last two days</h2>
                             <div className="">
                                 {past.length > 0 && (
                                     <div className="flex gap-4 flex-wrap bg-opacity-20">

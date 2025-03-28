@@ -49,7 +49,7 @@ const SchedulesPage = async () => {
             <div className="md:p-5 lg:p-6 xl:p-7 2xl:p-8">
                 {/* Ongoing */}
                 {ongoing.length > 0 && (
-                    <div className="flex flex-col mt-6">
+                    <div className="flex flex-col mt-6 bg-white p-6">
                         <h3 className="text-[20px] bg-gradient-to-br from-blue-800 to-purple-500 bg-clip-text text-transparent">Ongoing</h3>
                         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-2 gap-6">
                             {ongoing.map((schedule) => (
