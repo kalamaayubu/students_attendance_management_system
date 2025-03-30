@@ -8,12 +8,12 @@ export const sendNotification = async (title, body, recipients) => {
             notification: { title, body }
         });
 
-        console.log(`✅ Notification sent! Success: ${response.successCount}, Failures: ${response.failureCount}`);
+        console.log(`Notification sent! Success: ${response.successCount}, Failures: ${response.failureCount}`);
 
         if (response.failureCount > 0) {
             response.responses.forEach((res, index) => {
                 if (!res.success && res.error.code === 'messaging/registration-token-not-registered') {
-                    console.warn(`⚠️ Invalid token found, removing: ${recipients[index].endpoint}`);
+                    console.warn(`⚠️ Invalid token found: ${recipients[index].endpoint}`);
                 }
             });
         }

@@ -15,7 +15,7 @@ export default function LandingPage() {
             <section className="flex flex-col lg:flex-row w-full gap-8 items-center justify-between">
               <div className="m-auto lg:m-0 w-full lg:max-w-[500px] max-w-[400px] rounded-lg flex flex-col items-center justify-between self-start">
                 <h1 className="text-center text-4xl flex lg:hidden mt-14 mb-4">How does AttendMe work</h1>
-                <Image src={'/assets/howItWorks.webp'} width={500} height={500} alt="Image" className="w-full object-cover rounded-xl"/>
+                <Image src={'/assets/howItWorks.jpeg'} width={500} height={500} alt="Image" className="w-full object-cover rounded-xl"/>
                 <Link href={"/"} className="mt-4 self-start hidden lg:flex">
                   <button className="bg-gradient-to-br from-blue-700 from-20% to bg-purple-600 to-90% text-white rounded-md px-4 py-2 hover:bg-gradient-to-tl hover:from-blue-700 hover:to-purple-600 mt-8 m-auto">
                     Start Tracking Attendance
@@ -56,7 +56,7 @@ export default function LandingPage() {
                 </Link>
               </div>
               <div className="flex flex-col gap-6">
-              <Image src={'/assets/howItWorksInstructors.webp'} width={500} height={500} alt="Image" className="w-full object-cover rounded-xl max-w-[550px] "/>
+              <Image src={'/assets/howItWorksInstructors.jpeg'} width={500} height={500} alt="Image" className="w-full object-cover rounded-xl max-w-[550px] "/>
                 <Link href={"/"} className=" flex lg:hidden">
                   <button className="bg-gradient-to-br from-blue-700 from-20% to bg-purple-600 to-90% text-white rounded-md px-4 py-2 hover:bg-gradient-to-tl hover:from-blue-700 hover:to-purple-600 mt-8 m-auto">
                     Start Tracking Attendance

@@ -19,7 +19,8 @@ const Scheduling = ({ courses }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [message, setMessage] = useState("");
+  const [isPast, setIsPast] = useState(false);
+  const [isEndBeforeBeginning, setIsEndBeforeBeginning] = useState(false);
 
   const handleScheduleSubmit = async (e) => {
     e.preventDefault();
@@ -85,15 +86,35 @@ const Scheduling = ({ courses }) => {
             )}
           </SelectContent>
         </Select>
-        <DateTimePicker onFromChange={setStartTime} onToChange={setEndTime} />
+        <DateTimePicker
+          onFromChange={setStartTime}
+          onToChange={setEndTime}
+          setIsEndBeforeBeginning={setIsEndBeforeBeginning}
+          isEndBeforeBeginning={isEndBeforeBeginning}
+          isPast={isPast}
+          setIsPast={setIsPast}
+        />
         <div className="self-center">
           <button
             type="submit"
             className={`w-full bg-gradient-to-br from-blue-700 to-purple-600 text-white rounded-lg py-2 px-4 ${
-              isProcessing ? "cursor-not-allowed" : "cursor-pointer"
+              isProcessing ? "cursor-not-allowed opacity-100" : "cursor-pointer"
+            } ${
+              !selectedCourseId ||
+              !startTime ||
+              !endTime ||
+              isPast ||
+              isEndBeforeBeginning
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer"
             }`}
             disabled={
-              !selectedCourseId || !startTime || !endTime || isProcessing
+              !selectedCourseId ||
+              !startTime ||
+              !endTime ||
+              isProcessing ||
+              isPast ||
+              isEndBeforeBeginning
             }
           >
             {isProcessing ? (
@@ -107,7 +128,6 @@ const Scheduling = ({ courses }) => {
           </button>
         </div>
       </form>
-      {message && <p className="text-green-600 mt-4">{message}</p>}
     </div>
   );
 };

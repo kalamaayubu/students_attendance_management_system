@@ -28,7 +28,7 @@ const Hero = () => {
         <div>
           <div className="w-80 h-[450px] lg:w-80 rounded-lg transition-transform hover:rotate-12 transform-gpu -rotate-0 hover:scale-95 drop-shadow-[20px_50px_10px_rgba(0,0,0,0.7)] hover:drop-shadow-[-20px_50px_10px_rgba(0,0,0,0.7)] mt-3">
             <img
-              src="/assets/markAttendance.png"
+              src="/assets/markingAttendance.png"
               alt="Hero"
               className="object-cover w-full h-full shadow-md rounded-lg"
             />

@@ -76,7 +76,6 @@ const SchedulesPage = async () => {
                         </div>
                     )}
 
-                    
                     {/* Upcomming sessions */}
                     {upcoming.length > 0 && (
                         <div className="mt-10 p-6 bg-white">
