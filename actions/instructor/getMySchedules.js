@@ -11,6 +11,7 @@ export async function getMySchedules(instructorId) {
     const { data: sessions, error:fetchSessionsError } = await supabase
         .from('schedules')
         .select(`
+            id,
             course_id,
             start_time, 
             end_time,

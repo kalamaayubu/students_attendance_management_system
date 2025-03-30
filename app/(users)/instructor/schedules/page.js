@@ -54,8 +54,8 @@ const SchedulesPage = async () => {
 
         return (
             <div className="">
-                <div className="flex flex-col gap-8">
-                    <div className="bg-white p-5">
+                <div className="flex flex-col gap-4">
+                    <div className="bg-white p-5 mt-2">
                         <h1 className="text-[18px] bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text mb-2 text-center lg:text-start">Schedule a lesson</h1>
                         <Scheduling courses={courses}/>
                     </div>

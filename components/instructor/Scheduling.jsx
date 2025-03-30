@@ -98,7 +98,7 @@ const Scheduling = ({ courses }) => {
           <button
             type="submit"
             className={`w-full bg-gradient-to-br from-blue-700 to-purple-600 text-white rounded-lg py-2 px-4 ${
-              isProcessing ? "cursor-not-allowed opacity-100" : "cursor-pointer"
+              isProcessing ? "cursor-not-allowed opacity-100" : ""
             } ${
               !selectedCourseId ||
               !startTime ||

@@ -19,7 +19,7 @@ const Dropdown = ({ trigger, label, menuItems }) => {
           <DropdownMenuItem
             key={index}
             onClick={item.onClick}
-            className="hover:bg-gray-200 cursor-pointer"
+            className="hover:bg-gray-500 cursor-pointer"
           >
             {item.title}
           </DropdownMenuItem>
