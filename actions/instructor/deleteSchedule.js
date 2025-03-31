@@ -16,13 +16,13 @@ export async function deleteSchedule(scheduleId, course_code) {
     }
 
     // Get the subscribers to push notifications to
-    const { data: subscribers, error: tokensError } = await supabase
+    const { data: subscribers, error: subscribersError } = await supabase
         .from('push_subscriptions')
         .select('endpoint')
 
-    if (tokensError) {
-        console.log('Error getting subscribers:', tokensError)
-        return { success: false, error: tokensError.message}
+    if (subscribersError) {
+        console.log('Error getting subscribers:', subscribersError)
+        return { success: false, error: subscribersError.message}
     }
 
     if (!subscribers || subscribers.length === 0) {
@@ -30,12 +30,11 @@ export async function deleteSchedule(scheduleId, course_code) {
         return { success: false, error: 'No subscriber was found'}
     } 
 
-    // const tokens = subscribers.map(subscriber => subscriber.endpoint)
-    console.log('TOKENS:::', subscribers)
     // Notify users of the deleted schedule
-    await sendNotification("Schedule removed", "Schedule removed. Check your remaining schedules", subscribers)
+    await sendNotification('Schedule Removed', 'A schedule has been removed. Check your remaining schedules.', subscribers);
 
     revalidatePath('/instructor/schedules')
+    revalidatePath('/student/schedules')
     console.log(`✅ ${course_code} schedule deleted successfully`)
     return { success: true, message: `${course_code} schedule deleted.`}
 }

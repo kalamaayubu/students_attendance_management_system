@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
@@ -11,9 +11,17 @@ const DateTimePicker = ({
   setIsPast,
   isPast,
   isEndBeforeBeginning,
+  initialFrom = "", // For edit mode Accept initial values
+  initialTo = "", // For edit mode
 }) => {
   const [fromDateTime, setFromDateTime] = useState("");
   const [toTime, setToTime] = useState("");
+
+  // Update state when initial values change(for edit mode)
+  useEffect(() => {
+    if (initialFrom) setFromDateTime(initialFrom);
+    if (initialTo) setToTime(initialTo);
+  }, [initialFrom, initialTo]);
 
   // The beginning of the session
   const handleFromChange = (e) => {

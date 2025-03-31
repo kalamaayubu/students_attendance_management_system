@@ -9,21 +9,28 @@ import {
 import { useState } from "react";
 import DateTimePicker from "../DateTimepicker";
 import { Loader } from "lucide-react";
-import { scheduleSession } from "@/actions/instructor/scheduleSession";
 import { getUserId } from "@/utils/getUserId";
 import { toast } from "react-toastify";
+import { updateSchedule } from "@/actions/instructor/updateSchedule";
 import { getInstructorInitialLocation } from "@/utils/geofencing/getInstructorInitalLocation";
 
-const Scheduling = ({ courses }) => {
-  const [selectedCourseId, setSelectedCourseId] = useState("");
+const UpdatingSchedule = ({ courses, session, setIsUpdateDialogOpen }) => {
+  const [selectedCourseId, setSelectedCourseId] = useState(session.course_id);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [startTime, setStartTime] = useState(session.start_time);
+  const [endTime, setEndTime] = useState(session.end_time);
   const [isPast, setIsPast] = useState(false);
   const [isEndBeforeBeginning, setIsEndBeforeBeginning] = useState(false);
 
-  // Handle schedule submission
-  const handleScheduleSubmit = async (e) => {
+  // Handle schedule update submission
+  const handleScheduleUpdateSubmission = async (
+    e,
+    scheduleId,
+    startTime,
+    endTime,
+    courseId,
+    courseCode
+  ) => {
     e.preventDefault();
     setIsProcessing(true);
 
@@ -40,19 +47,26 @@ const Scheduling = ({ courses }) => {
       const instructorId = await getUserId();
 
       if (selectedCourseId && instructorId) {
-        const response = await scheduleSession({
-          courseId: selectedCourseId,
-          instructorId,
+        const { success, error, message } = await updateSchedule(
+          scheduleId,
           startTime,
           endTime,
-          latitude,
           longitude,
-        });
-        toast.success(response.message);
+          latitude,
+          courseId,
+          courseCode
+        );
+        // Show the error message incase of any error
+        if (!success) {
+          toast.error(error);
+          return;
+        }
+        toast.success(`${message}`);
         setIsProcessing(false);
+        setIsUpdateDialogOpen(false);
       }
     } catch (error) {
-      console.error("Error scheduling session:", error);
+      console.error("Error updating session:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -61,10 +75,20 @@ const Scheduling = ({ courses }) => {
   return (
     <div className="container">
       <form
-        onSubmit={handleScheduleSubmit}
-        className="flex flex-col lg:flex-row gap-4 lg:gap-10 items-start lg:items-center bg-white p-8 rounded-xl justify-between 2xl:justify-around"
+        onSubmit={(e) =>
+          handleScheduleUpdateSubmission(
+            e,
+            session.id,
+            session.start_time,
+            session.end_time,
+            session.course_id,
+            session.courses.course_code
+          )
+        }
+        className="flex flex-col gap-4 items-start bg-white p-8 rounded-xl justify-between 2xl:justify-around"
       >
-        <Select onValueChange={setSelectedCourseId}>
+        {/* Course Selection */}
+        <Select onValueChange={setSelectedCourseId} value={selectedCourseId}>
           <SelectTrigger className="bg-white border outline-none py-2 max-w-[300px] m-auto w-full">
             <SelectValue placeholder="Select course" />
           </SelectTrigger>
@@ -82,7 +106,7 @@ const Scheduling = ({ courses }) => {
               ))
             ) : (
               <SelectItem value="no-courses" disabled>
-                No courses available
+                Loading courses...
               </SelectItem>
             )}
           </SelectContent>
@@ -94,7 +118,11 @@ const Scheduling = ({ courses }) => {
           isEndBeforeBeginning={isEndBeforeBeginning}
           isPast={isPast}
           setIsPast={setIsPast}
+          initialFrom={startTime} // Set initial values
+          initialTo={endTime}
         />
+
+        {/* Submit button */}
         <div className="self-center">
           <button
             type="submit"
@@ -121,10 +149,10 @@ const Scheduling = ({ courses }) => {
             {isProcessing ? (
               <span className="flex items-center gap-4 animate-pulse">
                 <Loader className="animate-spin size-5" />
-                Scheduling...
+                Updating...
               </span>
             ) : (
-              "Schedule"
+              "Update"
             )}
           </button>
         </div>
@@ -133,4 +161,4 @@ const Scheduling = ({ courses }) => {
   );
 };
 
-export default Scheduling;
+export default UpdatingSchedule;

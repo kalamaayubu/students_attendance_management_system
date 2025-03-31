@@ -6,19 +6,22 @@ import { useState } from "react";
 import { deleteSchedule } from "@/actions/instructor/deleteSchedule";
 import { toast } from "react-toastify";
 import ReusableDialog from "../ReusableDialog";
+import UpdatingSchedule from "./UpdatingSchedule";
 
-const ScheduleCard = ({ session, status }) => {
+const ScheduleCard = ({ session, status, courses }) => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   // Schedule card menu items
   const menuItems = [
     {
       title: "Update session",
+      onClick: () => setIsUpdateDialogOpen(true), // Open update confirmation dialog
     },
     {
       title: "Delete session",
-      onClick: () => setIsDialogOpen(true), // Open confirmation dialog
+      onClick: () => setIsDeleteDialogOpen(true), // Open delete confirmation dialog
     },
   ];
 
@@ -36,6 +39,7 @@ const ScheduleCard = ({ session, status }) => {
         return;
       }
       toast.success(message);
+      setIsDeleteDialogOpen(false);
     } catch (error) {
       console.error("Error deleting schedule:", error);
     } finally {
@@ -44,7 +48,7 @@ const ScheduleCard = ({ session, status }) => {
   };
 
   return (
-    <div className="border group hover:border-gray-700 rounded-lg p-4 bg-white flex flex-col gap-2 w-[250px] transition-all duration-300">
+    <div className="border group hover:shadow-md rounded-lg p-4 bg-white flex flex-col gap-2 w-[250px] transition-all duration-300">
       <div className="flex gap-4">
         <p className="font-bold">{session.courses.course_code}</p>
         {/* More horizontal icon to open a dropdown menu */}
@@ -65,8 +69,8 @@ const ScheduleCard = ({ session, status }) => {
       {/* Dialog to confirm deletion of a session */}
       <ReusableDialog
         title="Are you sure?"
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
       >
         <p className="text-gray-700">
           This action cannot be undone. You are about to delete this{" "}
@@ -74,7 +78,7 @@ const ScheduleCard = ({ session, status }) => {
         </p>
         <div className="flex justify-end gap-2 mt-4">
           <button
-            onClick={() => setIsDialogOpen(false)}
+            onClick={() => setIsDeleteDialogOpen(false)}
             className="bg-gray-200 rounded-md"
           >
             Cancel
@@ -96,6 +100,24 @@ const ScheduleCard = ({ session, status }) => {
             )}
           </button>
         </div>
+      </ReusableDialog>
+
+      {/* Dialog for updating a scheduled session */}
+      <ReusableDialog
+        title=""
+        open={isUpdateDialogOpen}
+        onOpenChange={setIsUpdateDialogOpen}
+      >
+        <div>
+          <h3 className="gradient-text text-2xl">
+            Update {session.courses.course_code} session
+          </h3>
+        </div>
+        <UpdatingSchedule
+          courses={courses}
+          session={session}
+          setIsUpdateDialogOpen={setIsUpdateDialogOpen}
+        />
       </ReusableDialog>
     </div>
   );

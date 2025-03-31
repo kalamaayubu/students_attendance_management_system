@@ -68,7 +68,7 @@ const SchedulesPage = async () => {
                                 {ongoing.length > 0 && (
                                     <div className="flex gap-4 flex-wrap">
                                         {ongoing.map((session, index) => (
-                                            <ScheduleCard status={'ongoing'} key={index} session={session}/>
+                                            <ScheduleCard status={'ongoing'} key={index} session={session} courses={courses}/>
                                         ))}
                                     </div>
                                 )}
@@ -84,7 +84,7 @@ const SchedulesPage = async () => {
                                 {upcoming.length > 0 && (
                                     <div className="flex gap-4 flex-wrap">
                                         {upcoming.map((session, index) => (
-                                            <ScheduleCard status={'upcoming'} key={index} session={session}/>
+                                            <ScheduleCard status={'upcoming'} key={index} session={session} courses={courses}/>
                                         ))}
                                     </div>
                                 )}
@@ -100,7 +100,7 @@ const SchedulesPage = async () => {
                                 {past.length > 0 && (
                                     <div className="flex gap-4 flex-wrap bg-opacity-20">
                                         {past.map((session, index) => (
-                                            <ScheduleCard status={'past'} key={index} session={session}/>
+                                            <ScheduleCard status={'past'} key={index} session={session} courses={courses}/>
                                         ))}
                                     </div>
                                 )}
