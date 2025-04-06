@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -22,7 +21,6 @@ const ReportTable = ({ report }) => {
       )
     ),
   ];
-  // alert(allDates.length);
 
   return (
     <div className="">

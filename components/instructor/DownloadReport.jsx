@@ -2,10 +2,10 @@
 
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { DownloadCloudIcon, LucideClockArrowDown } from "lucide-react";
+import { DownloadCloudIcon } from "lucide-react";
 import TooltipWrapper from "../TooltipWrapper";
 
-const DownloadReport = () => {
+const DownloadReport = ({ setDownloadClicked }) => {
   const generatePDF = async () => {
     const reportTable = document.getElementById("report-table"); // Target the ReportTable
     const downloadButton = document.getElementById("download-button"); // Get the button
@@ -13,8 +13,12 @@ const DownloadReport = () => {
     if (!reportTable) return;
 
     try {
-      // Hide the button before capturing
-      if (downloadButton) downloadButton.style.display = "none";
+      if (setDownloadClicked) setDownloadClicked(true);
+
+      // Give time for layout to re-render with w-fit
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if (downloadButton) downloadButton.style.display = "none"; // Hide the button before capturing
 
       // Capture the table as an image
       const canvas = await html2canvas(reportTable, { scale: 2 });
