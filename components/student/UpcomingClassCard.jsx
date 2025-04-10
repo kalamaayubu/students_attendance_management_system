@@ -8,7 +8,7 @@ dayjs.extend(timezone);
 import ReusableDialog from "../ReusableDialog";
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2Icon, X } from "lucide-react";
+import { CheckCircle2Icon, Loader, X } from "lucide-react";
 
 const UpcomingClassCard = ({
   scheduleData,
@@ -17,6 +17,7 @@ const UpcomingClassCard = ({
   status,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isProceeding, setIsProceeding] = useState(false);
 
   // Check if attendance is already marked
   const isAttendanceMarked = attendanceRecords.some(
@@ -39,6 +40,11 @@ const UpcomingClassCard = ({
       ? "Attendance already marked."
       : "Proceed to mark attendance?";
   }
+
+  // Handle the click of proceed button
+  const handleProceed = () => {
+    setIsProceeding(true);
+  };
 
   return (
     <>
@@ -87,8 +93,21 @@ const UpcomingClassCard = ({
             }}
             className="flex"
           >
-            <button className="m-auto w-fit text-white px-8 py-2 rounded-lg bg-gradient-to-br from-blue-700 to-purple-600">
-              Proceed
+            <button
+              onClick={handleProceed}
+              className={`m-auto w-fit text-white px-8 py-2 ${
+                isProceeding ? "cursor-not-allowed" : ""
+              } rounded-lg bg-gradient-to-br from-blue-700 to-purple-600`}
+              disabled={isProceeding}
+            >
+              {isProceeding ? (
+                <span className="animate-pulse flex items-center justify-center gap-3">
+                  <Loader className="animate-spin" />
+                  Please wait...
+                </span>
+              ) : (
+                <span>Proceed</span>
+              )}
             </button>
           </Link>
         )}

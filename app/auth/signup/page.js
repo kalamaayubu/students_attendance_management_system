@@ -51,7 +51,7 @@ const SignupPage = () => {
         <div className="h-screen flex">
             <div className="m-auto max-w-[350px] w-[80%] -translate-y-4">
                 <div className="flex flex-col items-center w-full mb-10">
-                    <Image width={800} height={800} src="/icons/attendMeLogoNoBg.png" alt="Logo" className="w-20 flex"/>
+                    <Image width={800} height={800} src="/icons/attendMeLogoNoBg.png" alt="Logo" priority={true} className="w-20 flex"/>
                     <p className="text-[18px] text-gray-700 font-semibold">Fill the form below to sign up.</p>
                 </div> 
                 <Formik

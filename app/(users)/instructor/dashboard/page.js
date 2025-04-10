@@ -29,8 +29,6 @@ const InstructorDashboard = async () => {
           {stats.map((stat, index) => (
             <StatsCard key={index} {...stat}/>
           ))}
-          {/* <div className="min-w-[250px] min-h-[155px] bg-white rounded-lg"></div>
-          <div className="min-w-[250px] min-h-[155px] bg-white rounded-lg"></div> */}
         </div>
           <AttendanceLineChart data={attendanceChartData}/>
           <StudentsPieChart pieData={studentsInEachCourse}/>

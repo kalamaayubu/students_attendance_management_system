@@ -70,7 +70,7 @@ const LoginPage = () => {
     <div className="h-screen flex">
     <div className="m-auto max-w-[350px] w-[80%] -translate-y-4">
         <div className="flex flex-col items-center w-full mb-10">
-            <Image width={800} height={800} src="/icons/attendMeLogoNoBg.png" alt="Logo" className="w-20 flex"/>
+            <Image width={800} height={800} src="/icons/attendMeLogoNoBg.png" alt="Logo" priority={true} className="w-20 flex"/>
             <p className="text-[18px] text-gray-900 font-semibold">Fill in your credentails to log in</p>
         </div>
         <Formik
@@ -109,7 +109,7 @@ const LoginPage = () => {
                     <button 
                         type="submit" 
                         disabled={isProcessing || isRedirecting || isSubmitting} 
-                        className={`blue-purple-gradient text-white rounded-lg ${isProcessing ? 'cursor-not-allowed opacity-70' : 'hover:bg-blue-500'}`}>
+                        className={`blue-purple-gradient text-white rounded-lg ${isProcessing ? 'cursor-not-allowed opacity-70' : ''}`}>
                         {isProcessing ? (
                             <span className="flex items-center justify-center gap-4 text-white animate-pulse">
                                 <Loader className="animate-spin"/>

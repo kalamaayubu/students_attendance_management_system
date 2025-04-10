@@ -57,7 +57,9 @@ const MarkAttendanceClient = ({
         instructorLon
       );
       if (!isWithinRange) {
-        toast.error("You are too far from the instructor.");
+        toast.error(
+          "Failed to mark attendance. Please check your internet connection and try again."
+        );
         return;
       }
 

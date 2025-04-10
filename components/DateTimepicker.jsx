@@ -5,8 +5,8 @@ import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 
 const DateTimePicker = ({
-  onFromChange,
-  onToChange,
+  onFromChange, // Callbacks to lift state up
+  onToChange, // Callbacks to lift state up
   setIsEndBeforeBeginning,
   setIsPast,
   isPast,
@@ -55,7 +55,10 @@ const DateTimePicker = ({
     setIsEndBeforeBeginning(beforeStart); // Lift state to "Scheduling"
 
     setToTime(value);
-    onToChange(toDateTime.format());
+
+    // ✅ ADJUSTMENT: Add 3 hours to endTime before passing to parent
+    const adjustedToTime = toDateTime.add(3, "hour");
+    onToChange(adjustedToTime.format()); // Pass the adjusted time to parent
   };
 
   return (

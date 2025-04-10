@@ -7,6 +7,7 @@ import { toast } from "react-toastify"
 import { Formik, Form, Field, ErrorMessage } from "formik"; // For form state management
 import * as Yup from "yup" // For validation schema definition
 import Image from "next/image"
+import { Loader } from "lucide-react"
 
 
 const ForgotPasswordPage = () => {
@@ -71,9 +72,9 @@ const ForgotPasswordPage = () => {
                 <button 
                     type="submit" 
                     disabled={isProcessing} 
-                    className={`bg-blue-700 rounded-lg ${isProcessing ? 'cursor-not-allowed bg-slate-500' : 'hover:bg-blue-600'}`}
+                    className={`blue-purple-gradient text-white rounded-lg ${isProcessing ? "cursor-not-allowed bg-opacity-30" : ''}`}
                 >
-                    {isProcessing? <span className="animate-pulse">Submitting...</span> : 'Submit'}
+                    {isProcessing? <span className="animate-pulse flex items-center justify-center gap-4"> <Loader className="animate-spin"/> Submitting...</span> : 'Submit'}
                 </button>
             </Form>
             )}

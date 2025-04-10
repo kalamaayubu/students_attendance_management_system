@@ -39,8 +39,8 @@ const AttendancePieChart = ({ attendanceStats }) => {
             nameKey="courseCode"
             cx="50%"
             cy="50%"
-            outerRadius="80%"
-            innerRadius="60%"
+            outerRadius="90%"
+            innerRadius="70%"
             fill="#8884d8"
           >
             {attendanceStats.map((entry, index) => (
@@ -51,7 +51,7 @@ const AttendancePieChart = ({ attendanceStats }) => {
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
+          {/* <Legend /> */}
         </PieChart>
       </ResponsiveContainer>
     </div>

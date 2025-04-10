@@ -94,7 +94,7 @@ const SchedulesPage = async () => {
 
                     {/* Past sessions */}
                     {past.length > 0 && (
-                        <div className="mt-10 bg-white p-5 flex flex-col items-center">
+                        <div className="mt-10 hidden bg-white p-5 flex-col items-center">
                             <h2 className="text-[18px] mb-6 bg-gradient-to-br from-blue-800 to-purple-500 text-transparent bg-trasparent bg-clip-text">Last two days</h2>
                             <div className="">
                                 {past.length > 0 && (

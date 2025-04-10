@@ -49,7 +49,7 @@ const StudentsPieChart = ({ pieData }) => {
             ))}
           </Pie>
           <Tooltip />
-          <Legend layout="horizontal" align="center" verticalAlign="bottom" />
+          {/* <Legend layout="horizontal" align="center" verticalAlign="bottom" /> */}
         </PieChart>
       </ResponsiveContainer>
     </div>
